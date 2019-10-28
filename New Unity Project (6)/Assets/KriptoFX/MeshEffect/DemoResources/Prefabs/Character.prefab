@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4176590266185968}
   - component: {fileID: 95576189943762158}
   - component: {fileID: 114436717604966626}
+  - component: {fileID: 839507955937727018}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -70,6 +71,26 @@ MonoBehaviour:
     type: 3}
   SwordPosition: {fileID: 4840089735331880}
   StartSwordPosition: {fileID: 4743853441939966}
+--- !u!114 &839507955937727018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015953946757434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 249e9a5b4874640409b61c59aea4585c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monster: {fileID: 0}
+  fovStartPoint: {fileID: 0}
+  lookSpeed: 200
+  maxAngle: 45
+  maxAngleReset: 90
+  canLean: 0
+  leftArm: 0
+  rightArm: 0
 --- !u!1 &1022752977223204
 GameObject:
   m_ObjectHideFlags: 0

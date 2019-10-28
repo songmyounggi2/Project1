@@ -7,34 +7,55 @@ public class PlayerManager : MonoBehaviour
     private float _moveSpeed = 5.0f;
     private Animator _playerAnimator;
 
+
     public enum Charstate
     {
-         idle,attack,walk,jump
+         idle,walk_left, walk_right, walk_forward, walk_backward, attack, attack2, attack3,
     }
 
+
     public Charstate charstate;
- 
+
+    private void Awake()
+    {
+      
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         _playerAnimator = GetComponent<Animator>();
         charstate = Charstate.idle;
-        PlayerAnimationColtrol();
+        PlayerAnimationControl();
 
     }
-    private void PlayerAnimationColtrol()
+    private void PlayerAnimationControl()
     {
         switch ((int)charstate)
         {
             case 0:
-                _playerAnimator.SetTrigger("IDLE 2 WEAPONS");
+                _playerAnimator.SetTrigger("IDLE");
                 break;
             case 1:
-                _playerAnimator.SetTrigger("ATTACK 2 WEAPONS A");
+                _playerAnimator.SetTrigger("MOVE_LEFT");
                 break;
             case 2:
-                _playerAnimator.SetTrigger("ATTACKMOVE");
+                _playerAnimator.SetTrigger("MOVE_RIGHT");
+                break;
+            case 3:
+                _playerAnimator.SetTrigger("MOVE_FORWARD");
+                break;
+            case 4:
+                _playerAnimator.SetTrigger("MOVE_BACKWARD");
+                break;
+            case 5:
+                _playerAnimator.SetTrigger("ATTACK");
+                break;
+            case 6:
+                _playerAnimator.SetTrigger("ATTACK2");
+                break;
+            case 7:
+                _playerAnimator.SetTrigger("ATTACK_SKILL");
                 break;
         }
     }
@@ -44,17 +65,17 @@ public class PlayerManager : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
                 SetWalk();
-            SetJump();
+            //SetJump();
             SetAttack();
         }
         else
             SetIdle();
 
-        PlayerAnimationColtrol();
+        PlayerAnimationControl();
     }
     bool CheckIsAttacking()
     {
-        if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2")|| this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("AttackSkill"))
             return true;
         else
             return false;
@@ -67,38 +88,86 @@ public class PlayerManager : MonoBehaviour
             return;
 
         if (Input.GetKey(KeyCode.A))
+        {
             this.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
+            charstate = Charstate.walk_left;
+        }
         if (Input.GetKey(KeyCode.D))
+        {
             this.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
+            charstate = Charstate.walk_right;
+        }
         if (Input.GetKey(KeyCode.W))
+        {
             this.transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);
+            charstate = Charstate.walk_forward;
+        }
         if (Input.GetKey(KeyCode.S))
+        {
             this.transform.Translate(Vector3.back * _moveSpeed * Time.deltaTime);
+            charstate = Charstate.walk_backward;
+        }
 
-        charstate = Charstate.walk;
+        
+
     }
-    void SetJump()
-    {
-        ResetAnimationParameters();
-        if (Input.GetKeyDown(KeyCode.Space))
-            charstate = Charstate.jump;
-    }
+
+    //void SetJump()
+    //{
+    //    ResetAnimationParameters();
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //        charstate = Charstate.jump;
+    //}
+    //콤보 대기시간,콤보 키 입력은 어캐?
+    //한번클릭 -> 공격, 시간 내에 두번클릭 -> 연속공격, 드래그 -> 스킬
+    //클릭을 때는 순간 돌아가는데?
+    //클릭을 땔때 이거라면 돌아가지 않게?
+
+    //시간안에 클릭하지 않으면 돌아감 ->코루틴으로 체크 
+    //
+
     private void SetAttack()
     {
         ResetAnimationParameters();
+
         if (Input.GetMouseButtonDown(0))
-            charstate = Charstate.attack;
+        {
+            StartCoroutine (AttackTimeLimit(0.2f));
+
+            if (charstate == Charstate.attack)
+                charstate = Charstate.attack2;
+            else if (charstate == Charstate.attack2)
+                charstate = Charstate.attack3;
+            else
+                charstate = Charstate.attack;
+        }
     }
+    IEnumerator AttackTimeLimit(float waitTime)
+    {
+            yield return new WaitForSeconds(waitTime);
+    }
+
+    
     void SetIdle()
     {
+        if (CheckIsAttacking())
+        {
+            Debug.Log("dd");
+            return;
+        }
         ResetAnimationParameters();
         charstate = Charstate.idle;
     }
     void ResetAnimationParameters()
     {
-        _playerAnimator.ResetTrigger("IDLE 2 WEAPONS");
-        _playerAnimator.ResetTrigger("ATTACK 2 WEAPONS A");
-        _playerAnimator.ResetTrigger("ATTACKMOVE");
+        _playerAnimator.ResetTrigger("IDLE");
+        _playerAnimator.ResetTrigger("ATTACK");
+        _playerAnimator.ResetTrigger("ATTACK2");
+        _playerAnimator.ResetTrigger("ATTACK_SKILL");
+        _playerAnimator.ResetTrigger("MOVE_LEFT");
+        _playerAnimator.ResetTrigger("MOVE_RIGHT");
+        _playerAnimator.ResetTrigger("MOVE_FORWARD");
+        _playerAnimator.ResetTrigger("MOVE_BACKWARD");
     }
 
     // Update is called once per frame
