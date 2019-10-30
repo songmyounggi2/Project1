@@ -63,23 +63,6 @@
     <Compile Include="Assets\KriptoFX\MeshEffect\Scripts\Editor\MeshRendererEditor.cs" />
     <Compile Include="Assets\KriptoFX\MeshEffect\Shaders\Editor\ME_CustomShaderGUI.cs" />
     <Compile Include="Assets\KriptoFX\MeshEffect\Shaders\Editor\ME_UberParticleGUI.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\AutoRigEditor.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\BlendShapeEditor.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\BoneCreation.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\ColladaExporter.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\ColladaExporterExport.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\CreateBlendShape.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\CreateControls.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\DrivenKeyEditor.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\GlobalControlEditor.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\IKHandleEditor.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\Puppet3DEditor.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\Puppet3DSelection.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\SkinCluster.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\Skinning.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\SkinWeightControlEditor.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\SortingLayerEditor.cs" />
-    <Compile Include="Assets\Puppet3D\Scripts\Editor\SplineEditor.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/유니티/New Unity Project (6)/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

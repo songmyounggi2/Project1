@@ -63,15 +63,20 @@ public class PlayerManager : MonoBehaviour
     {
         if (Input.anyKey)
         {
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
-                SetWalk();
+            ResetAnimationParameters();
             //SetJump();
             SetAttack();
+
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+            {
+                SetWalk();
+            }
         }
         else
             SetIdle();
 
         PlayerAnimationControl();
+  
     }
     bool CheckIsAttacking()
     {
@@ -82,7 +87,7 @@ public class PlayerManager : MonoBehaviour
     }
     void SetWalk()
     {
-        ResetAnimationParameters();
+        _playerAnimator.ResetTrigger("IDLE");
 
         if (CheckIsAttacking())
             return;
@@ -123,36 +128,29 @@ public class PlayerManager : MonoBehaviour
     //클릭을 때는 순간 돌아가는데?
     //클릭을 땔때 이거라면 돌아가지 않게?
 
-    //시간안에 클릭하지 않으면 돌아감 ->코루틴으로 체크 
-    //
+    //시간안에 클릭하지 않으면 돌아감 -> 공격 애니메이션이 실행중인지 확인
+    // 실행 중에 공격했다면 다음으로 아니라면 아이들?
+    // 모션이 끝나기 전에 클릭시 연계공격     
 
     private void SetAttack()
     {
-        ResetAnimationParameters();
-
         if (Input.GetMouseButtonDown(0))
         {
-            StartCoroutine (AttackTimeLimit(0.2f));
-
-            if (charstate == Charstate.attack)
+            if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
                 charstate = Charstate.attack2;
-            else if (charstate == Charstate.attack2)
+            else if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
                 charstate = Charstate.attack3;
             else
                 charstate = Charstate.attack;
         }
     }
-    IEnumerator AttackTimeLimit(float waitTime)
-    {
-            yield return new WaitForSeconds(waitTime);
-    }
+  
 
     
     void SetIdle()
     {
         if (CheckIsAttacking())
         {
-            Debug.Log("dd");
             return;
         }
         ResetAnimationParameters();
@@ -160,7 +158,7 @@ public class PlayerManager : MonoBehaviour
     }
     void ResetAnimationParameters()
     {
-        _playerAnimator.ResetTrigger("IDLE");
+        _playerAnimator.SetTrigger("IDLE");
         _playerAnimator.ResetTrigger("ATTACK");
         _playerAnimator.ResetTrigger("ATTACK2");
         _playerAnimator.ResetTrigger("ATTACK_SKILL");
