@@ -82,6 +82,10 @@
     <Compile Include="Assets\KriptoFX\MeshEffect\Scripts\Rendering\ME_PerPlatformSettings.cs" />
     <Compile Include="Assets\KriptoFX\MeshEffect\Scripts\Rendering\ME_Unity_LWRP_HDRP_Pain.cs" />
     <Compile Include="Assets\Mixamo\Melee Axe Pack\Demo\CameraScroll.cs" />
+    <Compile Include="Assets\Radial Menu Framework\Scripts\RMF_Demo.cs" />
+    <Compile Include="Assets\Radial Menu Framework\Scripts\RMF_ForceDirection.cs" />
+    <Compile Include="Assets\Radial Menu Framework\Scripts\RMF_RadialMenu.cs" />
+    <Compile Include="Assets\Radial Menu Framework\Scripts\RMF_RadialMenuElement.cs" />
     <Compile Include="Assets\rpg animations\scripts\CameraController.cs" />
     <Compile Include="Assets\rpg animations\scripts\HiderInTime.cs" />
     <Compile Include="Assets\rpg animations\scripts\HidingMachineBehaviour.cs" />
@@ -92,6 +96,7 @@
     <Compile Include="Assets\rpg animations\scripts\WorldInteraction.cs" />
     <Compile Include="Assets\Script\CameraMove.cs" />
     <Compile Include="Assets\Script\lockOn.cs" />
+    <Compile Include="Assets\Script\MonsterManager.cs" />
     <Compile Include="Assets\Script\PlayerManager.cs" />
     <None Include="Assets\KriptoFX\MeshEffect\Shaders\ME_UberDistortionStandard.shader" />
     <None Include="Assets\KriptoFX\MeshEffect\Shaders\ME_DistortionPerlinMobile.shader" />
@@ -107,6 +112,7 @@
     <None Include="Assets\KriptoFX\MeshEffect\Shaders\ME_GlowCutout.shader" />
     <None Include="Assets\KriptoFX\MeshEffect\Shaders\ME_Gold.shader" />
     <None Include="Assets\KriptoFX\MeshEffect\Readme.txt" />
+    <None Include="Assets\Creatures_Pack\Creature_Insect\Materials\Standard_Two_Sided (2).shader" />
     <None Include="Assets\KriptoFX\MeshEffect\ImagePostEffects\Mobile\Resources\ME_Bloom_Inc.cginc" />
     <None Include="Assets\KriptoFX\MeshEffect\Shaders\ME_DistortionSlimeMobile.shader" />
     <None Include="Assets\KriptoFX\MeshEffect\Shaders\ME_GlowCutoutGradient.shader" />

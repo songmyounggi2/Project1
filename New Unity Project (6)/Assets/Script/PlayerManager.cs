@@ -80,17 +80,17 @@ public class PlayerManager : MonoBehaviour
     }
     bool CheckIsAttacking()
     {
-        if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2")|| this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("AttackSkill"))
+        if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("AttackSkill"))
             return true;
         else
             return false;
     }
     void SetWalk()
     {
-        _playerAnimator.ResetTrigger("IDLE");
-
         if (CheckIsAttacking())
             return;
+        _playerAnimator.ResetTrigger("IDLE");
+
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -113,7 +113,6 @@ public class PlayerManager : MonoBehaviour
             charstate = Charstate.walk_backward;
         }
 
-        
 
     }
 
@@ -144,9 +143,7 @@ public class PlayerManager : MonoBehaviour
                 charstate = Charstate.attack;
         }
     }
-  
 
-    
     void SetIdle()
     {
         if (CheckIsAttacking())
