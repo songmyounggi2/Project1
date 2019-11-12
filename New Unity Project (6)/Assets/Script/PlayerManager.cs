@@ -8,13 +8,18 @@ public class PlayerManager : MonoBehaviour
     private Animator _playerAnimator;
 
 
-    public enum Charstate
+    public enum CharState                                                          //상태
     {
          idle,walk_left, walk_right, walk_forward, walk_backward, attack, attack2, attack3,
     }
+    public struct CharStats                                                          //스텟
+    {
+        int HP;
+        int _moveSpeed;
 
-
-    public Charstate charstate;
+    }
+ 
+    public CharState charstate;
 
     private void Awake()
     {
@@ -25,7 +30,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         _playerAnimator = GetComponent<Animator>();
-        charstate = Charstate.idle;
+        charstate = CharState.idle;
         PlayerAnimationControl();
 
     }
@@ -95,22 +100,22 @@ public class PlayerManager : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             this.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
-            charstate = Charstate.walk_left;
+            charstate = CharState.walk_left;
         }
         if (Input.GetKey(KeyCode.D))
         {
             this.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
-            charstate = Charstate.walk_right;
+            charstate = CharState.walk_right;
         }
         if (Input.GetKey(KeyCode.W))
         {
             this.transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);
-            charstate = Charstate.walk_forward;
+            charstate = CharState.walk_forward;
         }
         if (Input.GetKey(KeyCode.S))
         {
             this.transform.Translate(Vector3.back * _moveSpeed * Time.deltaTime);
-            charstate = Charstate.walk_backward;
+            charstate = CharState.walk_backward;
         }
 
 
@@ -136,11 +141,11 @@ public class PlayerManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-                charstate = Charstate.attack2;
+                charstate = CharState.attack2;
             else if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
-                charstate = Charstate.attack3;
+                charstate = CharState.attack3;
             else
-                charstate = Charstate.attack;
+                charstate = CharState.attack;
         }
     }
 
@@ -151,7 +156,7 @@ public class PlayerManager : MonoBehaviour
             return;
         }
         ResetAnimationParameters();
-        charstate = Charstate.idle;
+        charstate = CharState.idle;
     }
     void ResetAnimationParameters()
     {
