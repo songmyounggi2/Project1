@@ -68,7 +68,13 @@ public class MonsterManager : MonoBehaviour
         monsstate = MansState.idle;
         MonsterAnimationControl();
     }
-
+    private void OnTriggerEnter(Collider col)
+    {
+        if(col.gameObject.tag == "Sword")
+        {
+            Debug.Log("충돌");
+        }
+    }
     private void MonsterAnimationControl()
     {
         //ResetAnimationParameters();
@@ -79,6 +85,7 @@ public class MonsterManager : MonoBehaviour
                 break;
             case 1:
                 _monsterAnimator.SetTrigger("WALK");
+
                 break;
             case 2:
                 _monsterAnimator.SetTrigger("DASH");
@@ -113,7 +120,7 @@ public class MonsterManager : MonoBehaviour
     float DistanceCheck()
     {
         float distance = Vector3.Distance(Player.transform.position, transform.position);
-        Debug.Log(distance);
+
         return distance;
     }
     void MonsWalk()
