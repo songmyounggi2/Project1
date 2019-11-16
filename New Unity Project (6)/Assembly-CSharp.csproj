@@ -144,6 +144,7 @@
     <Compile Include="Assets\Script\MonsterHit.cs" />
     <Compile Include="Assets\Script\MonsterManager.cs" />
     <Compile Include="Assets\Script\PlayerManager.cs" />
+    <Compile Include="Assets\Script\SwordCrash.cs" />
     <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\MotionBlur.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Fog.shader" />

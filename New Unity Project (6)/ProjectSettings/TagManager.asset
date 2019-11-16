@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Monster
   - Sword
+  - Left
+  - Right
+  - Middle
   layers:
   - Default
   - TransparentFX

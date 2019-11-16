@@ -14,7 +14,6 @@ public class UI_sword : MonoBehaviour
         anim.SetFloat("swordWalkSelect", 0f);
     }
 
-
     //Strike Buttons
     public void SwordStrike01OnClick()
     {

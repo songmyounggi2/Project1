@@ -90,6 +90,14 @@ public class PlayerManager : MonoBehaviour
         else
             return false;
     }
+    void CreateColider()
+    {
+        MeshCollider.Instantiate(this, this.transform);
+    }
+    void DestroyColider()
+    {
+
+    }
     void SetWalk()
     {
         if (CheckIsAttacking())
@@ -117,8 +125,6 @@ public class PlayerManager : MonoBehaviour
             this.transform.Translate(Vector3.back * _moveSpeed * Time.deltaTime);
             charstate = CharState.walk_backward;
         }
-
-
     }
 
     //void SetJump()

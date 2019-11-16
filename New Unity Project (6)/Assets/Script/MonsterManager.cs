@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+public enum MansState
+{
+    idle, walk, dash, change, attack, attack2, attack3, Jump, L_Hit, R_Hit, M_Hit
+}
 public class MonsterManager : MonoBehaviour
 {
     public GameObject Player;
     private float _moveSpeed = 5.0f;
     private float _dashSpeed = 10.0f;
     private Animator _monsterAnimator;
-
-    public enum MansState
-    {
-        idle, walk, dash, change, attack, attack2, attack3,Jump,
-    }
 
     public MansState monsstate;
 
@@ -72,12 +70,12 @@ public class MonsterManager : MonoBehaviour
     {
         if(col.gameObject.tag == "Sword")
         {
-            Debug.Log("충돌");
+            Debug.Log(col.transform.position);
         }
     }
-    private void MonsterAnimationControl()
+    public void MonsterAnimationControl()
     {
-        //ResetAnimationParameters();
+        ResetAnimationParameters();
         switch ((int)monsstate)
         {
             case 0:
@@ -105,6 +103,15 @@ public class MonsterManager : MonoBehaviour
             case 7:
                 _monsterAnimator.SetTrigger("JUMP");
                 break;
+            case 8:
+                _monsterAnimator.SetTrigger("HIT_L");
+                break;
+            case 9:
+                _monsterAnimator.SetTrigger("HIT_R");
+                break;
+            case 10:
+                _monsterAnimator.SetTrigger("HIT_M");
+                break;
         }
     }
     void ResetAnimationParameters()
@@ -112,9 +119,9 @@ public class MonsterManager : MonoBehaviour
         _monsterAnimator.ResetTrigger("IDLE");
         _monsterAnimator.ResetTrigger("ATTACK1");
         _monsterAnimator.ResetTrigger("ATTACK2");
-        _monsterAnimator.ResetTrigger("ATTACK_SKILL");
+        //_monsterAnimator.ResetTrigger("ATTACK_SKILL");
         _monsterAnimator.ResetTrigger("WALK");
-        _monsterAnimator.ResetTrigger("DASH");
+        //_monsterAnimator.ResetTrigger("DASH");
         _monsterAnimator.ResetTrigger("JUMP");
     }
     float DistanceCheck()
