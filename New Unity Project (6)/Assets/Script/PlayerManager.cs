@@ -2,22 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum CharState                                                          //상태
+{
+    idle, walk_left, walk_right, walk_forward, walk_backward, attack, attack2, attack3,
+}
+public struct CharStats                                                          //스텟
+{
+    int HP;
+    int _moveSpeed;
+
+}
+
+
 public class PlayerManager : MonoBehaviour
 {
     private float _moveSpeed = 5.0f;
     private Animator _playerAnimator;
 
 
-    public enum CharState                                                          //상태
-    {
-         idle,walk_left, walk_right, walk_forward, walk_backward, attack, attack2, attack3,
-    }
-    public struct CharStats                                                          //스텟
-    {
-        int HP;
-        int _moveSpeed;
-
-    }
+    
  
     public CharState charstate;
 

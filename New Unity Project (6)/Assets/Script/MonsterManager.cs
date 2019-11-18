@@ -4,7 +4,35 @@ using UnityEngine;
 
 public enum MansState
 {
-    idle, walk, dash, change, attack, attack2, attack3, Jump, L_Hit, R_Hit, M_Hit
+    idle, walk, dash, change, attack, attack2, attack3, jump, L_Hit, R_Hit, M_Hit
+}
+struct MonsStats                                                          //스텟
+{
+    public string Habitat;
+    public string Name;
+    public int HP;
+    public int Power;
+    public float MoveSpeed;
+    public float DashSpeed;
+    public float AttackSpeed;
+    public float PerceptionRange;
+    public float AttackRange;
+    public bool Perception;
+
+    public MonsStats(string MonsHabitat, string MonsName, int MonsHP, int MonsPower, float MonsMoveSpeed, float MonsDashSpeed, float MonsAttackSpeed, float MonsPerceptionRange,float MonsAttackRange, bool MonsPerception)
+    {
+        Habitat = MonsHabitat;
+        Name = MonsName;
+        HP = MonsHP;
+        Power = MonsPower;
+        MoveSpeed = MonsMoveSpeed;
+        DashSpeed = MonsDashSpeed;
+        AttackSpeed = MonsAttackSpeed;
+        PerceptionRange = MonsPerceptionRange;
+        AttackRange = MonsAttackRange;
+        Perception = MonsPerception;
+    }
+
 }
 public class MonsterManager : MonoBehaviour
 {
@@ -12,38 +40,13 @@ public class MonsterManager : MonoBehaviour
     private float _moveSpeed = 5.0f;
     private float _dashSpeed = 10.0f;
     private Animator _monsterAnimator;
+    bool IsAttackable = true;
 
     public MansState monsstate;
 
-    struct MonsStats                                                          //스텟
-    {
-        public string Habitat;
-        public string Name;
-        public int HP;
-        public int Power;
-        public float MoveSpeed;
-        public float DashSpeed;
-        public float AttackSpeed;
-        public float PerceptionRange;
-        public bool Perception;
-
-        public MonsStats(string MonsHabitat,string MonsName, int MonsHP,int MonsPower, float MonsMoveSpeed, float MonsDashSpeed, float MonsAttackSpeed, float MonsPerceptionRange, bool MonsPerception)
-        {
-            Habitat = MonsHabitat;
-            Name = MonsName;
-            HP = MonsHP;
-            Power = MonsPower;
-            MoveSpeed = MonsMoveSpeed;
-            DashSpeed = MonsDashSpeed;
-            AttackSpeed = MonsAttackSpeed;
-            PerceptionRange = MonsPerceptionRange;
-            Perception = MonsPerception; 
-        }
-
-    }
     MonsStats[] mons = new MonsStats[]
          {
-            new MonsStats("Snow","Ogre",1500,150,10f,20f,3f,35.0f,false),
+            new MonsStats("Snow","Ogre",1500,150,10f,20f,10.0f,35.0f,5.0f,false),
          };
 
     // 기본 움직임 
@@ -63,8 +66,13 @@ public class MonsterManager : MonoBehaviour
     void Start()
     {
         _monsterAnimator = GetComponent<Animator>();
-        monsstate = MansState.idle;
-        MonsterAnimationControl();
+        SetStateIdle();
+    }
+    IEnumerator AttackCoolTime()
+    {
+        IsAttackable = false;
+        yield return new WaitForSeconds(mons[0].AttackSpeed);
+        IsAttackable = true;
     }
     private void OnTriggerEnter(Collider col)
     {
@@ -73,8 +81,64 @@ public class MonsterManager : MonoBehaviour
             Debug.Log(col.transform.position);
         }
     }
+    void SetStateIdle()
+    {
+        ResetAnimationParameters();
+        monsstate = MansState.idle;
+        MonsterAnimationControl();
+    }
+    void SetStateWalk()
+    {
+        ResetAnimationParameters();
+        monsstate = MansState.walk;
+        MonsterAnimationControl();
+    }
+    void SetStateChange()
+    {
+        ResetAnimationParameters();
+        monsstate = MansState.jump;
+        MonsterAnimationControl();
+    }
+    void SetStateAttack1()
+    {
+        ResetAnimationParameters();
+        monsstate = MansState.attack;
+        MonsterAnimationControl();
+    }
+    void SetStateAttack2()
+    {
+        ResetAnimationParameters();
+        monsstate = MansState.attack2;
+        MonsterAnimationControl();
+    }
+    void SetStateAttack3()
+    {
+        ResetAnimationParameters();
+        monsstate = MansState.attack3;
+        MonsterAnimationControl();
+    }
+    void SetStateHit_L()
+    {
+        ResetAnimationParameters();
+        monsstate = MansState.L_Hit;
+        MonsterAnimationControl();
+    }
+    void SetStateHit_R()
+    {
+        ResetAnimationParameters();
+        monsstate = MansState.R_Hit;
+        MonsterAnimationControl();
+    }
+    void SetStateHit_M()
+    {
+        ResetAnimationParameters();
+        monsstate = MansState.M_Hit;
+        MonsterAnimationControl();
+    }
+
     public void MonsterAnimationControl()
     {
+
         ResetAnimationParameters();
         switch ((int)monsstate)
         {
@@ -83,7 +147,6 @@ public class MonsterManager : MonoBehaviour
                 break;
             case 1:
                 _monsterAnimator.SetTrigger("WALK");
-
                 break;
             case 2:
                 _monsterAnimator.SetTrigger("DASH");
@@ -147,16 +210,25 @@ public class MonsterManager : MonoBehaviour
             monsstate = MansState.walk;
             MonsterAnimationControl();
         }
+
+        if (IsAttackable == false)
+        {
+            Debug.Log(IsAttackable);
+            ResetAnimationParameters();
+            monsstate = MansState.idle;
+            MonsterAnimationControl();
+        }
+          
     }
 
     void MotionCheck()
     {
-        if (mons[0].Perception == true)
-            return;
 
         if (mons[0].PerceptionRange > DistanceCheck() && DistanceCheck() > 5.0f)
         {
-            monsstate = MansState.Jump;
+            if (mons[0].Perception == true)
+                return;
+            monsstate = MansState.jump;
             MonsterAnimationControl();
         }
         else
@@ -164,11 +236,21 @@ public class MonsterManager : MonoBehaviour
     }
     void SetAttack()
     {
+
         if (mons[0].Perception == false)
             return;
 
+        if (IsAttackable == false)
+        {
+            ResetAnimationParameters();
+            monsstate = MansState.idle;
+            MonsterAnimationControl();
+            return;
+        }
+
         if (DistanceCheck() <= 5.0f)
         {
+            StartCoroutine("AttackCoolTime");
             ResetAnimationParameters();
             monsstate = MansState.attack;
             MonsterAnimationControl();
@@ -177,10 +259,7 @@ public class MonsterManager : MonoBehaviour
         {
             Debug.Log("ff");
             SetWalk();
-
         }
-            
-
 
     }
     // Update is called once per frame
