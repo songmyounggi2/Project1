@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum CharState                                                          //상태
 {
-    idle, walk_left, walk_right, walk_forward, walk_backward, attack, attack2, attack3,
+    idle, walk_left, walk_right, walk_forward, walk_backward, attack, attack2, attack3, avoid_left,avoid_right,avoid_back
 }
 public struct CharStats                                                          //스텟
 {
@@ -17,12 +17,12 @@ public struct CharStats                                                         
 
 public class PlayerManager : MonoBehaviour
 {
-    private float _moveSpeed = 5.0f;
+    private float _moveSpeed = 10.0f;
     private Animator _playerAnimator;
+    private Vector3 Look;
 
 
-    
- 
+
     public CharState charstate;
 
     private void Awake()
@@ -36,7 +36,7 @@ public class PlayerManager : MonoBehaviour
         _playerAnimator = GetComponent<Animator>();
         charstate = CharState.idle;
         PlayerAnimationControl();
-
+       
     }
     private void PlayerAnimationControl()
     {
@@ -65,6 +65,15 @@ public class PlayerManager : MonoBehaviour
                 break;
             case 7:
                 _playerAnimator.SetTrigger("ATTACK_SKILL");
+                break;
+            case 8:
+                _playerAnimator.SetTrigger("AVOID_LEFT");
+                break;
+            case 9:
+                _playerAnimator.SetTrigger("AVOID_RIGHT");
+                break;
+            case 10:
+                _playerAnimator.SetTrigger("AVOID_BACK");
                 break;
         }
     }
@@ -111,16 +120,33 @@ public class PlayerManager : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
+
             this.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
             charstate = CharState.walk_left;
+            if(Input.GetKey(KeyCode.Space))
+            {
+                Debug.Log("성공");
+                ResetAnimationParameters();
+                _playerAnimator.ResetTrigger("IDLE");
+                charstate = CharState.avoid_left;
+            }
         }
         if (Input.GetKey(KeyCode.D))
         {
+
             this.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
             charstate = CharState.walk_right;
+            if (Input.GetKey(KeyCode.Space))
+            {
+                Debug.Log("성공");
+                ResetAnimationParameters();
+                _playerAnimator.ResetTrigger("IDLE");
+                charstate = CharState.avoid_right;
+            }
         }
         if (Input.GetKey(KeyCode.W))
         {
+
             this.transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);
             charstate = CharState.walk_forward;
         }
@@ -128,6 +154,13 @@ public class PlayerManager : MonoBehaviour
         {
             this.transform.Translate(Vector3.back * _moveSpeed * Time.deltaTime);
             charstate = CharState.walk_backward;
+            if (Input.GetKey(KeyCode.Space))
+            {
+                Debug.Log("성공");
+                ResetAnimationParameters();
+                _playerAnimator.ResetTrigger("IDLE");
+                charstate = CharState.avoid_back;
+            }
         }
     }
 

@@ -36,17 +36,18 @@ struct MonsStats                                                          //스�
 }
 public class MonsterManager : MonoBehaviour
 {
-    public GameObject Player;
+    private GameObject Player;
     private float _moveSpeed = 5.0f;
     private float _dashSpeed = 10.0f;
     private Animator _monsterAnimator;
-    bool IsAttackable = true;
+    private bool IsAttackable = true;
+    
 
     public MansState monsstate;
 
     MonsStats[] mons = new MonsStats[]
          {
-            new MonsStats("Snow","Ogre",1500,150,10f,20f,10.0f,35.0f,5.0f,false),
+            new MonsStats("Snow","Ogre",1500,150,10f,20f,5.0f,35.0f,8.0f,false),
          };
 
     // 기본 움직임 
@@ -61,19 +62,39 @@ public class MonsterManager : MonoBehaviour
     // 피격 -> 오른쪽 피격 OR 왼쪽피격
     // 죽음
 
-
     // Start is called before the first frame update
     void Start()
     {
         _monsterAnimator = GetComponent<Animator>();
+        Player = GameObject.FindGameObjectWithTag("Player");
         SetStateIdle();
+
     }
+
+    void Update()
+    {
+
+        SetMotion();
+        MonsWalk();
+        PerceptionCheck();
+
+    }
+
     IEnumerator AttackCoolTime()
     {
+        if (IsAttackable == false)
+        {
+            Debug.Log(IsAttackable);
+            SetStateIdle();
+            yield break;
+        }
+        SetStateAttack1();
+
         IsAttackable = false;
         yield return new WaitForSeconds(mons[0].AttackSpeed);
         IsAttackable = true;
     }
+
     private void OnTriggerEnter(Collider col)
     {
         if(col.gameObject.tag == "Sword")
@@ -81,54 +102,63 @@ public class MonsterManager : MonoBehaviour
             Debug.Log(col.transform.position);
         }
     }
+
     void SetStateIdle()
     {
         ResetAnimationParameters();
         monsstate = MansState.idle;
         MonsterAnimationControl();
     }
+
     void SetStateWalk()
     {
         ResetAnimationParameters();
         monsstate = MansState.walk;
         MonsterAnimationControl();
     }
+
     void SetStateChange()
     {
         ResetAnimationParameters();
         monsstate = MansState.jump;
         MonsterAnimationControl();
     }
+
     void SetStateAttack1()
     {
         ResetAnimationParameters();
         monsstate = MansState.attack;
         MonsterAnimationControl();
     }
+
     void SetStateAttack2()
     {
         ResetAnimationParameters();
         monsstate = MansState.attack2;
         MonsterAnimationControl();
     }
+
     void SetStateAttack3()
     {
         ResetAnimationParameters();
         monsstate = MansState.attack3;
         MonsterAnimationControl();
     }
+
     void SetStateHit_L()
     {
         ResetAnimationParameters();
         monsstate = MansState.L_Hit;
         MonsterAnimationControl();
     }
+
     void SetStateHit_R()
     {
         ResetAnimationParameters();
         monsstate = MansState.R_Hit;
         MonsterAnimationControl();
     }
+
     void SetStateHit_M()
     {
         ResetAnimationParameters();
@@ -138,8 +168,6 @@ public class MonsterManager : MonoBehaviour
 
     public void MonsterAnimationControl()
     {
-
-        ResetAnimationParameters();
         switch ((int)monsstate)
         {
             case 0:
@@ -187,89 +215,69 @@ public class MonsterManager : MonoBehaviour
         //_monsterAnimator.ResetTrigger("DASH");
         _monsterAnimator.ResetTrigger("JUMP");
     }
-    float DistanceCheck()
+    float DistanceCheck()                               //거리확인
     {
         float distance = Vector3.Distance(Player.transform.position, transform.position);
 
         return distance;
     }
-    void MonsWalk()
+
+    void PerceptionCheck()                              //인지 확인
     {
-        if (this._monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        if (mons[0].PerceptionRange > DistanceCheck())
+        {
+            if (mons[0].Perception == true)
+                return;
+
+            SetStateChange();
+            mons[0].Perception = true;
+        }
+        else
+            mons[0].Perception = false;
+    }
+
+    void MonsWalk()                                 //몬스터가 앞으로가 가는함수
+    {
+        if (this._monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Jump")|| this._monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
             return;
 
         if(monsstate == MansState.walk)
             this.transform.Translate(Vector3.forward * mons[0].MoveSpeed * Time.deltaTime);
     }
-    void SetWalk()
+ 
+    void SetMotion()                                  //다음 동작 확인
     {
-        if (mons[0].PerceptionRange > DistanceCheck() && DistanceCheck() > 5.0)
-        {
-            mons[0].Perception = true;
-            ResetAnimationParameters();
-            monsstate = MansState.walk;
-            MonsterAnimationControl();
-        }
-
-        if (IsAttackable == false)
-        {
-            Debug.Log(IsAttackable);
-            ResetAnimationParameters();
-            monsstate = MansState.idle;
-            MonsterAnimationControl();
-        }
-          
-    }
-
-    void MotionCheck()
-    {
-
-        if (mons[0].PerceptionRange > DistanceCheck() && DistanceCheck() > 5.0f)
-        {
-            if (mons[0].Perception == true)
-                return;
-            monsstate = MansState.jump;
-            MonsterAnimationControl();
-        }
-        else
-            mons[0].Perception = false;
-    }
-    void SetAttack()
-    {
-
         if (mons[0].Perception == false)
             return;
 
-        if (IsAttackable == false)
+        if (mons[0].PerceptionRange > DistanceCheck() && DistanceCheck() > mons[0].AttackRange)
         {
-            ResetAnimationParameters();
-            monsstate = MansState.idle;
-            MonsterAnimationControl();
-            return;
+            SetStateWalk();
+        }
+        else if(DistanceCheck() <= mons[0].AttackRange)
+        {
+            
+            
+            StartCoroutine("AttackCoolTime");
+            
         }
 
-        if (DistanceCheck() <= 5.0f)
+
+    }
+
+    void SetAttack()                                //공격으로
+    {
+        if (mons[0].Perception == false)
+            return;
+
+        
+
+        if (DistanceCheck() <= mons[0].AttackRange)
         {
-            StartCoroutine("AttackCoolTime");
-            ResetAnimationParameters();
-            monsstate = MansState.attack;
-            MonsterAnimationControl();
-        }
-        else
-        {
-            Debug.Log("ff");
-            SetWalk();
+            
         }
 
     }
     // Update is called once per frame
-    void Update()
-    {
-        MotionCheck();
-       // MonsterAnimationControl();
-        MonsWalk();
-        SetAttack();
-
-
-    }
+  
 }
