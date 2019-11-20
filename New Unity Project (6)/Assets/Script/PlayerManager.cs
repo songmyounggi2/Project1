@@ -84,8 +84,25 @@ public class PlayerManager : MonoBehaviour
             ResetAnimationParameters();
             //SetJump();
             SetAttack();
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                ResetAnimationParameters();
+                charstate = CharState.avoid_left;
 
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+            }
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                ResetAnimationParameters();
+                charstate = CharState.avoid_back;
+
+            }
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                ResetAnimationParameters();
+                charstate = CharState.avoid_right;
+
+            }
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) )
             {
                 SetWalk();
             }
@@ -162,8 +179,13 @@ public class PlayerManager : MonoBehaviour
                 charstate = CharState.avoid_back;
             }
         }
+        
     }
+    void SetPosition()
+    {
+       
 
+    }
     //void SetJump()
     //{
     //    ResetAnimationParameters();
@@ -211,11 +233,13 @@ public class PlayerManager : MonoBehaviour
         _playerAnimator.ResetTrigger("MOVE_RIGHT");
         _playerAnimator.ResetTrigger("MOVE_FORWARD");
         _playerAnimator.ResetTrigger("MOVE_BACKWARD");
+        _playerAnimator.ResetTrigger("AVOID_BACK");
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("본 포지션" + gameObject.transform.position);
         CharacterInput();
     }
 }
