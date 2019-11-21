@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum CharState                                                          //상태
 {
-    idle, walk_left, walk_right, walk_forward, walk_backward, attack, attack2, attack3, avoid_left,avoid_right,avoid_back
+    idle, MOVE, attack, attack2, attack3, avoid_left,avoid_right,avoid_back
 }
 public struct CharStats                                                          //스텟
 {
@@ -87,7 +87,7 @@ public class PlayerManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 ResetAnimationParameters();
-                charstate = CharState.avoid_left;
+                charstate = CharState.MOVE;
 
             }
             if (Input.GetKeyDown(KeyCode.X))
@@ -137,40 +137,54 @@ public class PlayerManager : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
-
             this.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
-            charstate = CharState.walk_left;
-            if(Input.GetKey(KeyCode.Space))
+            charstate = CharState.MOVE;
+            _playerAnimator.SetFloat("MOVE_SPEED", 1);
+            _playerAnimator.SetFloat("MOVE_DIRECTION",7f);
+            if (Input.GetKey(KeyCode.Space))
             {
-                Debug.Log("성공");
-                ResetAnimationParameters();
-                _playerAnimator.ResetTrigger("IDLE");
-                charstate = CharState.avoid_left;
+                this.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
+                charstate = CharState.MOVE;
+                _playerAnimator.SetFloat("MOVE_SPEED", 10);
+                _playerAnimator.SetFloat("MOVE_DIRECTION", 7f);
+
+            }
+        }
+        if (Input.GetKey(KeyCode.A)&& Input.GetKey(KeyCode.S))
+        {
+            this.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime / 2);
+            this.transform.Translate(Vector3.back * _moveSpeed * Time.deltaTime / 2);
+            charstate = CharState.MOVE;
+            _playerAnimator.SetFloat("MOVE_SPEED", 1);
+            _playerAnimator.SetFloat("MOVE_DIRECTION", 2f);
+            if (Input.GetKey(KeyCode.Space))
+            {
+                this.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
+                charstate = CharState.MOVE;
+                _playerAnimator.SetFloat("MOVE_SPEED", 10);
+                _playerAnimator.SetFloat("MOVE_DIRECTION", 7f);
+
             }
         }
         if (Input.GetKey(KeyCode.D))
         {
 
             this.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
-            charstate = CharState.walk_right;
-            if (Input.GetKey(KeyCode.Space))
-            {
-                Debug.Log("성공");
-                ResetAnimationParameters();
-                _playerAnimator.ResetTrigger("IDLE");
-                charstate = CharState.avoid_right;
-            }
+            charstate = CharState.MOVE;
+            charstate = CharState.MOVE;
+            _playerAnimator.SetFloat("MOVE_SPEED", _moveSpeed);
+            _playerAnimator.SetFloat("MOVE_DIRECTION", 7);
         }
         if (Input.GetKey(KeyCode.W))
         {
 
             this.transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);
-            charstate = CharState.walk_forward;
+            charstate = CharState.MOVE;
         }
         if (Input.GetKey(KeyCode.S))
         {
             this.transform.Translate(Vector3.back * _moveSpeed * Time.deltaTime);
-            charstate = CharState.walk_backward;
+            charstate = CharState.MOVE;
             if (Input.GetKey(KeyCode.Space))
             {
                 Debug.Log("성공");
