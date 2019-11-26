@@ -8,7 +8,7 @@ public class lockOn : MonoBehaviour
     // This is what the player is looking at. In this example it is the dinosaur's head
     public GameObject fovStartPoint;
     // We will use the forward direction of whatever GameObject you give it.
-    public float lookSpeed = 200;
+    public float lookSpeed = 0.5f;
     // How fast the rotation happens.
     public float maxAngle = 45;
     // The maximum fov to trigger looking at the enemy.

@@ -84,7 +84,6 @@ public class MonsterManager : MonoBehaviour
     {
         if (IsAttackable == false)
         {
-            Debug.Log(IsAttackable);
             SetStateIdle();
             yield break;
         }

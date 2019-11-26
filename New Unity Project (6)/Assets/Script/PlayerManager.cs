@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum CharState                                                          //상태
 {
-    idle, MOVE, attack, attack2, attack3, avoid_left,avoid_right,avoid_back
+    IDLE, MOVE, ATTACK, AVOID,
 }
 public struct CharStats                                                          //스텟
 {
@@ -18,8 +18,12 @@ public struct CharStats                                                         
 public class PlayerManager : MonoBehaviour
 {
     private float _moveSpeed = 10.0f;
+    private float _runSpeed = 15.0f;
     private Animator _playerAnimator;
     private Vector3 Look;
+    private Vector3 AvoidStartPos;
+    private Vector3 AvoidEndtPos;
+    private bool isAvoid;
 
 
 
@@ -34,9 +38,11 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         _playerAnimator = GetComponent<Animator>();
-        charstate = CharState.idle;
+        charstate = CharState.IDLE;
         PlayerAnimationControl();
-       
+        isAvoid = false;
+        AvoidEndtPos = Vector3.zero;
+
     }
     private void PlayerAnimationControl()
     {
@@ -46,7 +52,7 @@ public class PlayerManager : MonoBehaviour
                 _playerAnimator.SetTrigger("IDLE");
                 break;
             case 1:
-                _playerAnimator.SetTrigger("MOVE_LEFT");
+                _playerAnimator.SetTrigger("MOVE");
                 break;
             case 2:
                 _playerAnimator.SetTrigger("MOVE_RIGHT");
@@ -61,7 +67,7 @@ public class PlayerManager : MonoBehaviour
                 _playerAnimator.SetTrigger("ATTACK");
                 break;
             case 6:
-                _playerAnimator.SetTrigger("ATTACK2");
+                _playerAnimator.SetTrigger("AVOID");
                 break;
             case 7:
                 _playerAnimator.SetTrigger("ATTACK_SKILL");
@@ -84,34 +90,18 @@ public class PlayerManager : MonoBehaviour
             ResetAnimationParameters();
             //SetJump();
             SetAttack();
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                ResetAnimationParameters();
-                charstate = CharState.MOVE;
-
-            }
-            if (Input.GetKeyDown(KeyCode.X))
-            {
-                ResetAnimationParameters();
-                charstate = CharState.avoid_back;
-
-            }
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                ResetAnimationParameters();
-                charstate = CharState.avoid_right;
-
-            }
+            
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) )
             {
-                SetWalk();
+                SetMove();
             }
         }
         else
             SetIdle();
 
         PlayerAnimationControl();
-  
+        
+
     }
     bool CheckIsAttacking()
     {
@@ -128,75 +118,165 @@ public class PlayerManager : MonoBehaviour
     {
 
     }
-    void SetWalk()
+    void SetMove() // 무브액션
     {
         if (CheckIsAttacking())
             return;
         _playerAnimator.ResetTrigger("IDLE");
-
+        float transtime = 0.5f;
 
         if (Input.GetKey(KeyCode.A))
         {
+            if (isAvoid)
+                return;
+
             this.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
             charstate = CharState.MOVE;
-            _playerAnimator.SetFloat("MOVE_SPEED", 1);
-            _playerAnimator.SetFloat("MOVE_DIRECTION",7f);
-            if (Input.GetKey(KeyCode.Space))
+            _playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
+            _playerAnimator.SetFloat("MOVE_DIRECTION_Y",-1f, transtime, Time.deltaTime);
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                this.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
-                charstate = CharState.MOVE;
-                _playerAnimator.SetFloat("MOVE_SPEED", 10);
-                _playerAnimator.SetFloat("MOVE_DIRECTION", 7f);
+
+                AvoidEndtPos = this.transform.position + this.transform.localRotation * Vector3.left * 15 + this.transform.localRotation * Vector3.forward * 12;
+              
+
+                //gameObject.GetComponent<lockOn>().enabled = false;
+
+                Debug.Log("AvoidEndtPos" + AvoidEndtPos);
+
+                isAvoid = true;
+                charstate = CharState.AVOID;
+                _playerAnimator.SetInteger("AVOID_TYPE", 1);
 
             }
         }
         if (Input.GetKey(KeyCode.A)&& Input.GetKey(KeyCode.S))
         {
-            this.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime / 2);
-            this.transform.Translate(Vector3.back * _moveSpeed * Time.deltaTime / 2);
-            charstate = CharState.MOVE;
-            _playerAnimator.SetFloat("MOVE_SPEED", 1);
-            _playerAnimator.SetFloat("MOVE_DIRECTION", 2f);
-            if (Input.GetKey(KeyCode.Space))
-            {
-                this.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
-                charstate = CharState.MOVE;
-                _playerAnimator.SetFloat("MOVE_SPEED", 10);
-                _playerAnimator.SetFloat("MOVE_DIRECTION", 7f);
+            if (isAvoid)
+                return;
 
-            }
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-
-            this.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
+            this.transform.Translate((Vector3.back+Vector3.left) * _moveSpeed * Time.deltaTime / 20f);
             charstate = CharState.MOVE;
-            charstate = CharState.MOVE;
-            _playerAnimator.SetFloat("MOVE_SPEED", _moveSpeed);
-            _playerAnimator.SetFloat("MOVE_DIRECTION", 7);
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-
-            this.transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);
-            charstate = CharState.MOVE;
+            _playerAnimator.SetFloat("MOVE_DIRECTION_X", -1f, transtime, Time.deltaTime);
+            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
+           
         }
         if (Input.GetKey(KeyCode.S))
         {
+            if (isAvoid)
+                return;
+
             this.transform.Translate(Vector3.back * _moveSpeed * Time.deltaTime);
             charstate = CharState.MOVE;
-            if (Input.GetKey(KeyCode.Space))
+            _playerAnimator.SetFloat("MOVE_DIRECTION_X", 0f, transtime, Time.deltaTime);
+            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
+
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.Log("성공");
-                ResetAnimationParameters();
-                _playerAnimator.ResetTrigger("IDLE");
-                charstate = CharState.avoid_back;
+                AvoidEndtPos = this.transform.position + this.transform.localRotation * Vector3.back * 8;
+               
+                
+                //gameObject.GetComponent<lockOn>().enabled = false;
+
+                Debug.Log("어보이드 엔드 포지션" + AvoidEndtPos);
+
+              
+                charstate = CharState.AVOID;
+                _playerAnimator.SetInteger("AVOID_TYPE", 2);
+                isAvoid = true;
+
             }
         }
-        
+        if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
+        {
+            if (isAvoid)
+                return;
+
+            this.transform.Translate((Vector3.back + Vector3.right) * _moveSpeed * Time.deltaTime / 20f);
+            charstate = CharState.MOVE;
+            _playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
+            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
+       
+
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            if (isAvoid)
+                return;
+
+            this.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
+            charstate = CharState.MOVE;
+            _playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
+            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", 0f, transtime, Time.deltaTime);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+               
+
+                //gameObject.GetComponent<lockOn>().enabled = false;
+
+                AvoidEndtPos = this.transform.position + this.transform.localRotation * Vector3.right * 15 + this.transform.localRotation * Vector3.forward * 12;
+
+                isAvoid = true;
+                charstate = CharState.AVOID;
+                _playerAnimator.SetInteger("AVOID_TYPE", 3);
+
+            }
+        }
+        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
+        {
+            if (isAvoid)
+                return;
+
+            this.transform.Translate((Vector3.right + Vector3.forward) * _moveSpeed * Time.deltaTime / 20f);
+            charstate = CharState.MOVE;
+            _playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
+            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", 1f, transtime, Time.deltaTime);
+
+          
+        }
+        if (Input.GetKey(KeyCode.W))
+        {
+            if (isAvoid)
+                return;
+
+            this.transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);
+            charstate = CharState.MOVE;
+            _playerAnimator.SetFloat("MOVE_DIRECTION_X", 0f, transtime, Time.deltaTime);
+            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", 1f , transtime, Time.deltaTime);
+
+   
+        }
+
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
+        {
+            if (isAvoid)
+                return;
+
+            this.transform.Translate((Vector3.forward + Vector3.left) * _moveSpeed * Time.deltaTime / 20f);
+            charstate = CharState.MOVE;
+            _playerAnimator.SetFloat("MOVE_DIRECTION_X", -1f, transtime, Time.deltaTime);
+            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", 1f, transtime, Time.deltaTime);
+
+        }
+
     }
-    void SetPosition()
+    void AvoidPosition()
     {
+        Debug.Log("현 포지션" + transform.position);
+        if (!isAvoid)
+            return;
+        if (transform.position == AvoidEndtPos)
+        {
+            isAvoid = false;
+           // gameObject.GetComponent<lockOn>().enabled = true;
+            _playerAnimator.SetInteger("AVOID_TYPE",0);
+            charstate = CharState.MOVE;
+            Debug.Log("그만도망가");
+        }
+        Debug.Log("욍포지션" + AvoidEndtPos);
+        transform.position = Vector3.MoveTowards(transform.position, AvoidEndtPos, 25 * Time.deltaTime);
        
 
     }
@@ -219,12 +299,15 @@ public class PlayerManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            charstate = CharState.ATTACK;
+            _playerAnimator.SetTrigger("ATTACK");
+
             if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-                charstate = CharState.attack2;
+                _playerAnimator.SetFloat("ATTACK_TYPE",2.0f);
             else if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
-                charstate = CharState.attack3;
+                _playerAnimator.SetFloat("ATTACK_TYPE", 3.0f);
             else
-                charstate = CharState.attack;
+                _playerAnimator.SetFloat("ATTACK_TYPE", 1.0f);
         }
     }
 
@@ -235,25 +318,21 @@ public class PlayerManager : MonoBehaviour
             return;
         }
         ResetAnimationParameters();
-        charstate = CharState.idle;
+        charstate = CharState.IDLE;
     }
     void ResetAnimationParameters()
     {
-        _playerAnimator.SetTrigger("IDLE");
+        _playerAnimator.ResetTrigger("IDLE");
         _playerAnimator.ResetTrigger("ATTACK");
-        _playerAnimator.ResetTrigger("ATTACK2");
-        _playerAnimator.ResetTrigger("ATTACK_SKILL");
-        _playerAnimator.ResetTrigger("MOVE_LEFT");
-        _playerAnimator.ResetTrigger("MOVE_RIGHT");
-        _playerAnimator.ResetTrigger("MOVE_FORWARD");
-        _playerAnimator.ResetTrigger("MOVE_BACKWARD");
-        _playerAnimator.ResetTrigger("AVOID_BACK");
+        _playerAnimator.ResetTrigger("MOVE");
+        _playerAnimator.ResetTrigger("AVOID");
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("본 포지션" + gameObject.transform.position);
+       
         CharacterInput();
+        AvoidPosition();
     }
 }

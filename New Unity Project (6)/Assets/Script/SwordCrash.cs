@@ -33,9 +33,9 @@ public class SwordCrash : MonoBehaviour
     }
     void CheckAttack()
     {
-        if (GameObject.Find("Character").GetComponent<PlayerManager>().charstate == CharState.attack)
+        if (GameObject.Find("Character").GetComponent<PlayerManager>().charstate == CharState.ATTACK)
             swordCollider.enabled = true;
-        else if (GameObject.Find("Character").GetComponent<PlayerManager>().charstate != CharState.attack)
+        else if (GameObject.Find("Character").GetComponent<PlayerManager>().charstate != CharState.ATTACK)
             swordCollider.enabled = false;
 
     }
