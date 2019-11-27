@@ -9,11 +9,13 @@ public class SwordCrash : MonoBehaviour
 
     MansState mansState;
     CharState charState;
-    public MeshCollider swordCollider;
+    MeshCollider swordCollider;
     // Start is called before the first frame update
     void Start()
     {
         //swordCollider = this.gameObject.
+        swordCollider = gameObject.GetComponent<MeshCollider>();
+        swordCollider.enabled = true;
     }
     private void OnTriggerEnter(Collider col)
     {
@@ -21,27 +23,43 @@ public class SwordCrash : MonoBehaviour
         // transform.localRotation;
         //transform.position;
 
-        if (col.gameObject.tag == "Left")
-            GameObject.Find("Juggernaut").GetComponent<MonsterManager>().monsstate = MansState.L_Hit;
+        if (col.gameObject.tag == "Middle")
+        {
+            swordCollider.enabled = false;
+            GameObject.Find("Juggernaut").GetComponent<MonsterManager>().ResetAnimationParameters();
+            GameObject.Find("Juggernaut").GetComponent<MonsterManager>().SetStateHit_M();
+        }
+
         else if (this.gameObject.tag == "Right")
-            GameObject.Find("Juggernaut").GetComponent<MonsterManager>().monsstate = MansState.R_Hit;
-        else if (this.gameObject.tag == "Middle")
-            GameObject.Find("Juggernaut").GetComponent<MonsterManager>().monsstate = MansState.R_Hit;
+        {
+            swordCollider.enabled = false;
+            GameObject.Find("Juggernaut").GetComponent<MonsterManager>().ResetAnimationParameters();
+            GameObject.Find("Juggernaut").GetComponent<MonsterManager>().SetStateHit_R();
+        }
+        else if (this.gameObject.tag == "Left")
+        {
+            swordCollider.enabled = false;
+            GameObject.Find("Juggernaut").GetComponent<MonsterManager>().ResetAnimationParameters();
+            GameObject.Find("Juggernaut").GetComponent<MonsterManager>().SetStateHit_L();
+        }
 
         GameObject.Find("Juggernaut").GetComponent<MonsterManager>().MonsterAnimationControl();
-        // 
     }
     void CheckAttack()
     {
-        if (GameObject.Find("Character").GetComponent<PlayerManager>().charstate == CharState.ATTACK)
+
+        if (GameObject.Find("Character").GetComponent<PlayerManager>()._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || GameObject.Find("Character").GetComponent<PlayerManager>()._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2") || GameObject.Find("Character").GetComponent<PlayerManager>()._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
+        { }
+
+        else
             swordCollider.enabled = true;
-        else if (GameObject.Find("Character").GetComponent<PlayerManager>().charstate != CharState.ATTACK)
-            swordCollider.enabled = false;
 
     }
+    
+
     // Update is called once per frame
     void Update()
     {
-        CheckAttack();
+        //CheckAttack();
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum MansState
 {
-    idle, walk, dash, change, attack, attack2, attack3, jump, L_Hit, R_Hit, M_Hit
+    idle, walk, dash, change, attack, attack2, attack3, jump, Hit
 }
 struct MonsStats                                                          //스텟
 {
@@ -47,7 +47,7 @@ public class MonsterManager : MonoBehaviour
 
     MonsStats[] mons = new MonsStats[]
          {
-            new MonsStats("Snow","Ogre",1500,150,10f,20f,5.0f,35.0f,8.0f,false),
+            new MonsStats("Snow","Ogre",1500,150,10f,20f,5.0f,35.0f,6.0f,false),
          };
 
     // 기본 움직임 
@@ -144,24 +144,33 @@ public class MonsterManager : MonoBehaviour
         MonsterAnimationControl();
     }
 
-    void SetStateHit_L()
+    public void SetStateHit_L()
     {
+        if (_monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+            return;
         ResetAnimationParameters();
-        monsstate = MansState.L_Hit;
+        monsstate = MansState.Hit;
+        _monsterAnimator.SetFloat("HIT_TYPE",1);
         MonsterAnimationControl();
     }
 
-    void SetStateHit_R()
+    public void SetStateHit_R()
     {
+        if (_monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+            return;
         ResetAnimationParameters();
-        monsstate = MansState.R_Hit;
+        monsstate = MansState.Hit;
+        _monsterAnimator.SetFloat("HIT_TYPE", 2);
         MonsterAnimationControl();
     }
 
-    void SetStateHit_M()
+    public void SetStateHit_M()
     {
+        if (_monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+            return;
         ResetAnimationParameters();
-        monsstate = MansState.M_Hit;
+        monsstate = MansState.Hit;
+        _monsterAnimator.SetFloat("HIT_TYPE", 3);
         MonsterAnimationControl();
     }
 
@@ -194,17 +203,17 @@ public class MonsterManager : MonoBehaviour
                 _monsterAnimator.SetTrigger("JUMP");
                 break;
             case 8:
-                _monsterAnimator.SetTrigger("HIT_L");
+                _monsterAnimator.SetTrigger("HIT");
                 break;
             case 9:
-                _monsterAnimator.SetTrigger("HIT_R");
+                _monsterAnimator.SetTrigger("HIT");
                 break;
             case 10:
                 _monsterAnimator.SetTrigger("HIT_M");
                 break;
         }
     }
-    void ResetAnimationParameters()
+    public void ResetAnimationParameters()
     {
         _monsterAnimator.ResetTrigger("IDLE");
         _monsterAnimator.ResetTrigger("ATTACK1");

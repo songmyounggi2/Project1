@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum CharState                                                          //상태
 {
-    IDLE, MOVE, ATTACK, AVOID,
+    IDLE, MOVE, AVOID, ATTACK1, ATTACK2, ATTACK3
 }
 public struct CharStats                                                          //스텟
 {
@@ -19,11 +19,10 @@ public class PlayerManager : MonoBehaviour
 {
     private float _moveSpeed = 10.0f;
     private float _runSpeed = 15.0f;
-    private Animator _playerAnimator;
-    private Vector3 Look;
-    private Vector3 AvoidStartPos;
+    public Animator _playerAnimator;
     private Vector3 AvoidEndtPos;
     private bool isAvoid;
+    private int AttackType;
 
 
 
@@ -42,6 +41,7 @@ public class PlayerManager : MonoBehaviour
         PlayerAnimationControl();
         isAvoid = false;
         AvoidEndtPos = Vector3.zero;
+        AttackType = 0;
 
     }
     private void PlayerAnimationControl()
@@ -55,31 +55,16 @@ public class PlayerManager : MonoBehaviour
                 _playerAnimator.SetTrigger("MOVE");
                 break;
             case 2:
-                _playerAnimator.SetTrigger("MOVE_RIGHT");
-                break;
-            case 3:
-                _playerAnimator.SetTrigger("MOVE_FORWARD");
-                break;
-            case 4:
-                _playerAnimator.SetTrigger("MOVE_BACKWARD");
-                break;
-            case 5:
-                _playerAnimator.SetTrigger("ATTACK");
-                break;
-            case 6:
                 _playerAnimator.SetTrigger("AVOID");
                 break;
-            case 7:
-                _playerAnimator.SetTrigger("ATTACK_SKILL");
+            case 3:
+                _playerAnimator.SetTrigger("ATTACK1");
                 break;
-            case 8:
-                _playerAnimator.SetTrigger("AVOID_LEFT");
+            case 4:
+                _playerAnimator.SetTrigger("ATTACK2");
                 break;
-            case 9:
-                _playerAnimator.SetTrigger("AVOID_RIGHT");
-                break;
-            case 10:
-                _playerAnimator.SetTrigger("AVOID_BACK");
+            case 5:
+                _playerAnimator.SetTrigger("ATTACK3");
                 break;
         }
     }
@@ -105,7 +90,7 @@ public class PlayerManager : MonoBehaviour
     }
     bool CheckIsAttacking()
     {
-        if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("AttackSkill"))
+        if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
             return true;
         else
             return false;
@@ -264,7 +249,6 @@ public class PlayerManager : MonoBehaviour
     }
     void AvoidPosition()
     {
-        Debug.Log("현 포지션" + transform.position);
         if (!isAvoid)
             return;
         if (transform.position == AvoidEndtPos)
@@ -274,6 +258,7 @@ public class PlayerManager : MonoBehaviour
             _playerAnimator.SetInteger("AVOID_TYPE",0);
             charstate = CharState.MOVE;
             Debug.Log("그만도망가");
+            
         }
         Debug.Log("욍포지션" + AvoidEndtPos);
         transform.position = Vector3.MoveTowards(transform.position, AvoidEndtPos, 25 * Time.deltaTime);
@@ -299,31 +284,40 @@ public class PlayerManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            charstate = CharState.ATTACK;
-            _playerAnimator.SetTrigger("ATTACK");
+            if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
+            {
+                charstate = CharState.ATTACK2;
 
-            if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-                _playerAnimator.SetFloat("ATTACK_TYPE",2.0f);
-            else if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
-                _playerAnimator.SetFloat("ATTACK_TYPE", 3.0f);
+            }
+           
             else
-                _playerAnimator.SetFloat("ATTACK_TYPE", 1.0f);
+            {
+                charstate = CharState.ATTACK1;
+
+            }
         }
+    
     }
 
     void SetIdle()
     {
         if (CheckIsAttacking())
-        {
             return;
-        }
+
+        ResetAnimationParameters();
+        charstate = CharState.IDLE;
+    }
+    void SSetIdle()
+    {
         ResetAnimationParameters();
         charstate = CharState.IDLE;
     }
     void ResetAnimationParameters()
     {
         _playerAnimator.ResetTrigger("IDLE");
-        _playerAnimator.ResetTrigger("ATTACK");
+        _playerAnimator.ResetTrigger("ATTACK1");
+        _playerAnimator.ResetTrigger("ATTACK2");
+        _playerAnimator.ResetTrigger("ATTACK3");
         _playerAnimator.ResetTrigger("MOVE");
         _playerAnimator.ResetTrigger("AVOID");
     }
