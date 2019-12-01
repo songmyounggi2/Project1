@@ -7,13 +7,15 @@ public enum CharState                                                          /
 {
     IDLE, MOVE, AVOID, ATTACK1, ATTACK2, ATTACK3
 }
+
 public struct CharStats                                                          //스텟
 {
-    int HP;
-    int _moveSpeed;
-
+    public int HP;
+    public int _moveSpeed;
+    public Vector3 _avoidDirection;
+    public bool IsAvoidable;
+    public float avoidCooltime;
 }
-
 
 public class PlayerManager : MonoBehaviour
 {
@@ -24,7 +26,7 @@ public class PlayerManager : MonoBehaviour
     private bool isAvoid;
     private int AttackType;
 
-
+    public CharStats charStats;
 
     public CharState charstate;
 
@@ -42,7 +44,10 @@ public class PlayerManager : MonoBehaviour
         isAvoid = false;
         AvoidEndtPos = Vector3.zero;
         AttackType = 0;
-
+        charStats._avoidDirection = Vector3.back;
+        charStats.IsAvoidable = true;
+        charStats.avoidCooltime = 5.0f;
+       
     }
     private void PlayerAnimationControl()
     {
@@ -68,6 +73,7 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
     }
+   
     private void CharacterInput()
     {
         if (Input.anyKey)
@@ -75,7 +81,7 @@ public class PlayerManager : MonoBehaviour
             ResetAnimationParameters();
             //SetJump();
             SetAttack();
-            
+            SetAvoid();
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) )
             {
                 SetMove();
@@ -88,10 +94,15 @@ public class PlayerManager : MonoBehaviour
         
 
     }
+    
     bool CheckIsAttacking()
     {
-        if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
+
+        if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
+        {
+
             return true;
+        }
         else
             return false;
     }
@@ -107,7 +118,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (CheckIsAttacking())
             return;
-        _playerAnimator.ResetTrigger("IDLE");
+        //_playerAnimator.ResetTrigger("IDLE");
         float transtime = 0.5f;
 
         if (Input.GetKey(KeyCode.A))
@@ -119,28 +130,16 @@ public class PlayerManager : MonoBehaviour
             charstate = CharState.MOVE;
             _playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
             _playerAnimator.SetFloat("MOVE_DIRECTION_Y",-1f, transtime, Time.deltaTime);
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
+            charStats._avoidDirection = Vector3.left;
 
-                AvoidEndtPos = this.transform.position + this.transform.localRotation * Vector3.left * 15 + this.transform.localRotation * Vector3.forward * 12;
-              
-
-                //gameObject.GetComponent<lockOn>().enabled = false;
-
-                Debug.Log("AvoidEndtPos" + AvoidEndtPos);
-
-                isAvoid = true;
-                charstate = CharState.AVOID;
-                _playerAnimator.SetInteger("AVOID_TYPE", 1);
-
-            }
+        
         }
         if (Input.GetKey(KeyCode.A)&& Input.GetKey(KeyCode.S))
         {
             if (isAvoid)
                 return;
 
-            this.transform.Translate((Vector3.back+Vector3.left) * _moveSpeed * Time.deltaTime / 20f);
+            this.transform.Translate((Vector3.back+Vector3.left) * _moveSpeed * Time.deltaTime * 0.05f);
             charstate = CharState.MOVE;
             _playerAnimator.SetFloat("MOVE_DIRECTION_X", -1f, transtime, Time.deltaTime);
             _playerAnimator.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
@@ -150,34 +149,20 @@ public class PlayerManager : MonoBehaviour
         {
             if (isAvoid)
                 return;
-
+            
             this.transform.Translate(Vector3.back * _moveSpeed * Time.deltaTime);
             charstate = CharState.MOVE;
             _playerAnimator.SetFloat("MOVE_DIRECTION_X", 0f, transtime, Time.deltaTime);
             _playerAnimator.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                AvoidEndtPos = this.transform.position + this.transform.localRotation * Vector3.back * 8;
-               
-                
-                //gameObject.GetComponent<lockOn>().enabled = false;
-
-                Debug.Log("어보이드 엔드 포지션" + AvoidEndtPos);
-
-              
-                charstate = CharState.AVOID;
-                _playerAnimator.SetInteger("AVOID_TYPE", 2);
-                isAvoid = true;
-
-            }
+            charStats._avoidDirection = Vector3.back;
+         
         }
         if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
         {
             if (isAvoid)
                 return;
 
-            this.transform.Translate((Vector3.back + Vector3.right) * _moveSpeed * Time.deltaTime / 20f);
+            this.transform.Translate((Vector3.back + Vector3.right) * _moveSpeed * Time.deltaTime * 0.05f);
             charstate = CharState.MOVE;
             _playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
             _playerAnimator.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
@@ -194,27 +179,15 @@ public class PlayerManager : MonoBehaviour
             charstate = CharState.MOVE;
             _playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
             _playerAnimator.SetFloat("MOVE_DIRECTION_Y", 0f, transtime, Time.deltaTime);
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-               
-
-                //gameObject.GetComponent<lockOn>().enabled = false;
-
-                AvoidEndtPos = this.transform.position + this.transform.localRotation * Vector3.right * 15 + this.transform.localRotation * Vector3.forward * 12;
-
-                isAvoid = true;
-                charstate = CharState.AVOID;
-                _playerAnimator.SetInteger("AVOID_TYPE", 3);
-
-            }
+            charStats._avoidDirection = Vector3.right;
+        
         }
         if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
         {
             if (isAvoid)
                 return;
 
-            this.transform.Translate((Vector3.right + Vector3.forward) * _moveSpeed * Time.deltaTime / 20f);
+            this.transform.Translate((Vector3.right + Vector3.forward) * _moveSpeed * Time.deltaTime * 0.05f);
             charstate = CharState.MOVE;
             _playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
             _playerAnimator.SetFloat("MOVE_DIRECTION_Y", 1f, transtime, Time.deltaTime);
@@ -239,13 +212,37 @@ public class PlayerManager : MonoBehaviour
             if (isAvoid)
                 return;
 
-            this.transform.Translate((Vector3.forward + Vector3.left) * _moveSpeed * Time.deltaTime / 20f);
+            this.transform.Translate((Vector3.forward + Vector3.left) * _moveSpeed * Time.deltaTime * 0.05f);
             charstate = CharState.MOVE;
             _playerAnimator.SetFloat("MOVE_DIRECTION_X", -1f, transtime, Time.deltaTime);
             _playerAnimator.SetFloat("MOVE_DIRECTION_Y", 1f, transtime, Time.deltaTime);
 
         }
 
+    }
+    IEnumerator AvoidTimer()
+    {
+        if (charStats.IsAvoidable == true)
+        {
+            charStats.IsAvoidable = false;
+
+            AvoidEndtPos = this.transform.position + this.transform.localRotation * charStats._avoidDirection * 8;
+            isAvoid = true;
+            charstate = CharState.AVOID;
+            PlayerAnimationControl();
+            _playerAnimator.SetInteger("AVOID_TYPE", 2);
+
+            yield return new WaitForSeconds(charStats.avoidCooltime);
+            charStats.IsAvoidable = true;
+        }
+
+    }
+    void SetAvoid()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {    
+            StartCoroutine("AvoidTimer");
+        }
     }
     void AvoidPosition()
     {
@@ -261,7 +258,7 @@ public class PlayerManager : MonoBehaviour
             
         }
         Debug.Log("욍포지션" + AvoidEndtPos);
-        transform.position = Vector3.MoveTowards(transform.position, AvoidEndtPos, 25 * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, AvoidEndtPos, 15 * Time.deltaTime);
        
 
     }
@@ -284,12 +281,18 @@ public class PlayerManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
+
+            if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
             {
                 charstate = CharState.ATTACK2;
-
             }
-           
+
+            else if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
+            {
+                charstate = CharState.ATTACK3;
+            }
+            else if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
+                charstate = CharState.IDLE;
             else
             {
                 charstate = CharState.ATTACK1;
@@ -298,7 +301,10 @@ public class PlayerManager : MonoBehaviour
         }
     
     }
-
+    void CreatSwordCollider()
+    {
+        GameObject.Find("Dragonblade(Clone)").GetComponent<SwordManager>().CreateSwordCollider();
+    }
     void SetIdle()
     {
         if (CheckIsAttacking())
@@ -307,11 +313,7 @@ public class PlayerManager : MonoBehaviour
         ResetAnimationParameters();
         charstate = CharState.IDLE;
     }
-    void SSetIdle()
-    {
-        ResetAnimationParameters();
-        charstate = CharState.IDLE;
-    }
+
     void ResetAnimationParameters()
     {
         _playerAnimator.ResetTrigger("IDLE");

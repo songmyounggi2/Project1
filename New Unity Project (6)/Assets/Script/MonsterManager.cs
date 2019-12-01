@@ -41,13 +41,13 @@ public class MonsterManager : MonoBehaviour
     private float _dashSpeed = 10.0f;
     private Animator _monsterAnimator;
     private bool IsAttackable = true;
-    
+
 
     public MansState monsstate;
 
     MonsStats[] mons = new MonsStats[]
          {
-            new MonsStats("Snow","Ogre",1500,150,10f,20f,5.0f,35.0f,6.0f,false),
+            new MonsStats("Snow","Ogre",1500,150,10f,20f,2.0f,35.0f,6.5f,false),
          };
 
     // 기본 움직임 
@@ -69,6 +69,7 @@ public class MonsterManager : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player");
         SetStateIdle();
 
+
     }
 
     void Update()
@@ -78,39 +79,62 @@ public class MonsterManager : MonoBehaviour
         MonsWalk();
         PerceptionCheck();
 
+
     }
 
     IEnumerator AttackCoolTime()
     {
-        if (IsAttackable == false)
+        if (IsAttackable == true)
         {
-            SetStateIdle();
-            yield break;
+            SetStateAttack1();
+            IsAttackable = false;
+            yield return new WaitForSeconds(mons[0].AttackSpeed);
+            IsAttackable = true;
         }
-        SetStateAttack1();
 
-        IsAttackable = false;
-        yield return new WaitForSeconds(mons[0].AttackSpeed);
-        IsAttackable = true;
+        else
+            SetStateIdle();
+
+
     }
 
     private void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.tag == "Sword")
+        if (col.gameObject.tag == "Sword")
         {
-            Debug.Log(col.transform.position);
+
+            Vector3 otherPos = col.transform.position;
+            Vector3 thisPos = this.GetComponent<CapsuleCollider>().transform.position;
+            if (thisPos.z > otherPos.z)
+            {
+                Debug.Log("몬포" + otherPos.z);
+                Debug.Log("칼포" + thisPos.z);
+                SetStateHit_L();
+            }
+            else if (thisPos.z <= otherPos.z)
+            {
+                Debug.Log("몬포" + otherPos.z);
+                Debug.Log("칼포" + thisPos.z);
+                SetStateHit_R();
+            }
         }
     }
 
     void SetStateIdle()
     {
+
         ResetAnimationParameters();
         monsstate = MansState.idle;
         MonsterAnimationControl();
     }
+    void LockOn()
+    {
+        this.gameObject.GetComponent<lockOn>().enabled = true;
+    }
 
     void SetStateWalk()
     {
+
         ResetAnimationParameters();
         monsstate = MansState.walk;
         MonsterAnimationControl();
@@ -125,6 +149,7 @@ public class MonsterManager : MonoBehaviour
 
     void SetStateAttack1()
     {
+        this.gameObject.GetComponent<lockOn>().enabled = false;
         ResetAnimationParameters();
         monsstate = MansState.attack;
         MonsterAnimationControl();
@@ -146,32 +171,34 @@ public class MonsterManager : MonoBehaviour
 
     public void SetStateHit_L()
     {
-        if (_monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        if (_monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || _monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
             return;
         ResetAnimationParameters();
-        monsstate = MansState.Hit;
-        _monsterAnimator.SetFloat("HIT_TYPE",1);
-        MonsterAnimationControl();
+        _monsterAnimator.SetTrigger("HIT");
+        Debug.Log("성공");
+        _monsterAnimator.SetFloat("HIT_TYPE", 1.0f);
+        Debug.Log("실ㅇ패");
+
     }
 
     public void SetStateHit_R()
     {
-        if (_monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        if (_monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || _monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
             return;
         ResetAnimationParameters();
-        monsstate = MansState.Hit;
-        _monsterAnimator.SetFloat("HIT_TYPE", 2);
-        MonsterAnimationControl();
+        _monsterAnimator.SetTrigger("HIT");
+        _monsterAnimator.SetFloat("HIT_TYPE", 2.0f);
+
+
     }
 
     public void SetStateHit_M()
     {
-        if (_monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        if (_monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || _monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
             return;
         ResetAnimationParameters();
-        monsstate = MansState.Hit;
-        _monsterAnimator.SetFloat("HIT_TYPE", 3);
-        MonsterAnimationControl();
+        _monsterAnimator.SetTrigger("HIT");
+        _monsterAnimator.SetFloat("HIT_TYPE", 3.0f);
     }
 
     public void MonsterAnimationControl()
@@ -180,6 +207,7 @@ public class MonsterManager : MonoBehaviour
         {
             case 0:
                 _monsterAnimator.SetTrigger("IDLE");
+
                 break;
             case 1:
                 _monsterAnimator.SetTrigger("WALK");
@@ -205,12 +233,12 @@ public class MonsterManager : MonoBehaviour
             case 8:
                 _monsterAnimator.SetTrigger("HIT");
                 break;
-            case 9:
-                _monsterAnimator.SetTrigger("HIT");
-                break;
-            case 10:
-                _monsterAnimator.SetTrigger("HIT_M");
-                break;
+                //case 9:
+                //    _monsterAnimator.SetTrigger("HIT");
+                //    break;
+                //case 10:
+                //    _monsterAnimator.SetTrigger("HIT_M");
+                //    break;
         }
     }
     public void ResetAnimationParameters()
@@ -222,6 +250,10 @@ public class MonsterManager : MonoBehaviour
         _monsterAnimator.ResetTrigger("WALK");
         //_monsterAnimator.ResetTrigger("DASH");
         _monsterAnimator.ResetTrigger("JUMP");
+    }
+    void ResetHitAnimation()
+    {
+         _monsterAnimator.ResetTrigger("HIT");
     }
     float DistanceCheck()                               //거리확인
     {
@@ -246,7 +278,7 @@ public class MonsterManager : MonoBehaviour
 
     void MonsWalk()                                 //몬스터가 앞으로가 가는함수
     {
-        if (this._monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Jump")|| this._monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        if (this._monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Jump")|| this._monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || _monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
             return;
 
         if(monsstate == MansState.walk)
@@ -264,8 +296,6 @@ public class MonsterManager : MonoBehaviour
         }
         else if(DistanceCheck() <= mons[0].AttackRange)
         {
-            
-            
             StartCoroutine("AttackCoolTime");
             
         }
