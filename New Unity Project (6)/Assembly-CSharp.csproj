@@ -60,6 +60,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\KriptoFX\BloodFX\Others\BFX_MouseOrbit.cs" />
+    <Compile Include="Assets\KriptoFX\BloodFX\Others\DemoGUI.cs" />
+    <Compile Include="Assets\KriptoFX\BloodFX\Others\DemoReactivator.cs" />
+    <Compile Include="Assets\KriptoFX\BloodFX\Others\UVTextureAnimator.cs" />
     <Compile Include="Assets\KriptoFX\MeshEffect\DemoResources\Scripts\ME_DemoGUI.cs" />
     <Compile Include="Assets\KriptoFX\MeshEffect\DemoResources\Scripts\ME_MouseOrbit.cs" />
     <Compile Include="Assets\KriptoFX\MeshEffect\DemoResources\Scripts\ME_RealtimeReflection.cs" />
@@ -146,6 +150,7 @@
     <Compile Include="Assets\Script\PlayerManager.cs" />
     <Compile Include="Assets\Script\SwordManager.cs" />
     <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
+    <None Include="Assets\KriptoFX\BloodFX\Shaders\Blood.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\MotionBlur.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Fog.shader" />
     <None Include="Assets\KriptoFX\MeshEffect\Shaders\ME_UberDistortionStandard.shader" />
@@ -185,6 +190,7 @@
     <None Include="Assets\PostProcessing\Editor Resources\UI\Trackball.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Bloom.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\TAA.shader" />
+    <None Include="Assets\KriptoFX\BloodFX\Readme.txt" />
     <None Include="Assets\PostProcessing\Resources\Shaders\EyeHistogram.compute" />
     <None Include="Assets\PostProcessing\Resources\Shaders\TAA.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\EyeAdaptation.cginc" />
@@ -196,6 +202,7 @@
     <None Include="Assets\Creatures_Pack\Creature_Insect\Materials\Standard_Two_Sided (2).shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\ScreenSpaceRaytrace.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Bloom.shader" />
+    <None Include="Assets\KriptoFX\BloodFX\Shaders\BloodNoSmooth.shader" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\VectorscopeRender.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\EyeAdaptation.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\ColorGrading.cginc" />

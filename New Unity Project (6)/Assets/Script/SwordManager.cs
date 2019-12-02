@@ -9,12 +9,12 @@ public class SwordManager : MonoBehaviour
 
     MansState mansState;
     CharState charState;
-    MeshCollider swordCollider;
+    BoxCollider swordCollider;
     // Start is called before the first frame update
     void Start()
     {
         //swordCollider = this.gameObject.
-        swordCollider = this.gameObject.GetComponent<MeshCollider>();
+        swordCollider = this.gameObject.GetComponent<BoxCollider>();
         swordCollider.enabled = false;
     }
     public void CreateSwordCollider()
@@ -23,34 +23,16 @@ public class SwordManager : MonoBehaviour
     }
     private void OnTriggerEnter(Collider col)
     {
-        //swordCollider.enabled = false;
-        // transform.localRotation;
-        //transform.position;
 
 
-        if (col.gameObject.tag == "Monster")
+
+        if (col.gameObject.tag == "Left"|| col.gameObject.tag == "Right" || col.gameObject.tag == "Mibble")
         {
-            
 
             swordCollider.enabled = false;
-            ////GameObject.Find("Juggernaut").GetComponent<MonsterManager>().ResetAnimationParameters();
-            //GameObject.Find("Juggernaut").GetComponent<MonsterManager>().SetStateHit_M();
+           
         }
 
-        //else if (this.gameObject.tag == "Right")
-        //{
-        //    swordCollider.enabled = false;
-        //   // GameObject.Find("Juggernaut").GetComponent<MonsterManager>().ResetAnimationParameters();
-        //    GameObject.Find("Juggernaut").GetComponent<MonsterManager>().SetStateHit_R();
-        //}
-        //else if (this.gameObject.tag == "Left")
-        //{
-        //    swordCollider.enabled = false;
-        //    //GameObject.Find("Juggernaut").GetComponent<MonsterManager>().ResetAnimationParameters();
-        //    GameObject.Find("Juggernaut").GetComponent<MonsterManager>().SetStateHit_L();
-        //}
-
-        // GameObject.Find("Juggernaut").GetComponent<MonsterManager>().MonsterAnimationControl();
     }
     void CheckAttack()
     {

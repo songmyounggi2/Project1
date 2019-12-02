@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum CharState                                                          //상태
 {
-    IDLE, MOVE, AVOID, ATTACK1, ATTACK2, ATTACK3
+    IDLE, MOVE, AVOID, ATTACK1, ATTACK2, ATTACK3,HIT
 }
 
 public struct CharStats                                                          //스텟
@@ -46,9 +46,26 @@ public class PlayerManager : MonoBehaviour
         AttackType = 0;
         charStats._avoidDirection = Vector3.back;
         charStats.IsAvoidable = true;
-        charStats.avoidCooltime = 5.0f;
+        charStats.avoidCooltime = 3.0f;
        
     }
+
+    private void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.tag == "Left")
+        {
+            Debug.Log("맞음");
+            charstate = CharState.HIT;
+            PlayerAnimationControl();
+        }
+        else if (col.gameObject.tag == "Right")
+        {
+            Debug.Log("맞음");
+            charstate = CharState.HIT;
+            PlayerAnimationControl();
+        }
+    }
+
     private void PlayerAnimationControl()
     {
         switch ((int)charstate)
@@ -70,6 +87,9 @@ public class PlayerManager : MonoBehaviour
                 break;
             case 5:
                 _playerAnimator.SetTrigger("ATTACK3");
+                break;
+            case 6:
+                _playerAnimator.SetTrigger("HIT");
                 break;
         }
     }
@@ -99,10 +119,7 @@ public class PlayerManager : MonoBehaviour
     {
 
         if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
-        {
-
             return true;
-        }
         else
             return false;
     }
@@ -110,6 +127,7 @@ public class PlayerManager : MonoBehaviour
     {
         MeshCollider.Instantiate(this, this.transform);
     }
+
     void DestroyColider()
     {
 
@@ -322,6 +340,7 @@ public class PlayerManager : MonoBehaviour
         _playerAnimator.ResetTrigger("ATTACK3");
         _playerAnimator.ResetTrigger("MOVE");
         _playerAnimator.ResetTrigger("AVOID");
+        _playerAnimator.ResetTrigger("HIT");
     }
 
     // Update is called once per frame

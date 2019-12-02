@@ -41,13 +41,13 @@ public class MonsterManager : MonoBehaviour
     private float _dashSpeed = 10.0f;
     private Animator _monsterAnimator;
     private bool IsAttackable = true;
-
+    public Vector3 hitDirection = Vector3.zero;
 
     public MansState monsstate;
 
     MonsStats[] mons = new MonsStats[]
          {
-            new MonsStats("Snow","Ogre",1500,150,10f,20f,2.0f,35.0f,6.5f,false),
+            new MonsStats("Snow","Ogre",1500,150,10f,20f,5.0f,35.0f,6.5f,false),
          };
 
     // 기본 움직임 
@@ -78,7 +78,10 @@ public class MonsterManager : MonoBehaviour
         SetMotion();
         MonsWalk();
         PerceptionCheck();
-
+        if(hitDirection != Vector3.zero)
+        {
+            CheckHitAnimation();
+        }
 
     }
 
@@ -122,7 +125,7 @@ public class MonsterManager : MonoBehaviour
 
     void SetStateIdle()
     {
-
+        ResetHitAnimation();
         ResetAnimationParameters();
         monsstate = MansState.idle;
         MonsterAnimationControl();
@@ -131,7 +134,7 @@ public class MonsterManager : MonoBehaviour
     {
         this.gameObject.GetComponent<lockOn>().enabled = true;
     }
-
+    
     void SetStateWalk()
     {
 
@@ -168,39 +171,62 @@ public class MonsterManager : MonoBehaviour
         monsstate = MansState.attack3;
         MonsterAnimationControl();
     }
+    public void CheckHitAnimation()
+    {
+        if (IsAttackking())
+        {
+            hitDirection = Vector3.zero;
+            return;
+        }
 
-    public void SetStateHit_L()
+        if (hitDirection == Vector3.forward)
+            SetStateHit_M();
+        else if (hitDirection == Vector3.left)
+            SetStateHit_L();
+        else
+            SetStateHit_R();
+    }
+    bool IsAttackking()
     {
         if (_monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || _monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
-            return;
+            return true;
+        else
+            return false;
+    }
+    public void SetStateHit_L()
+    {
+        //if (IsAttackking())
+        //    return;
         ResetAnimationParameters();
         _monsterAnimator.SetTrigger("HIT");
-        Debug.Log("성공");
-        _monsterAnimator.SetFloat("HIT_TYPE", 1.0f);
-        Debug.Log("실ㅇ패");
+        _monsterAnimator.SetFloat("HIT_TYPE", -1.0f, 0.01f, Time.deltaTime);
 
     }
 
     public void SetStateHit_R()
     {
-        if (_monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || _monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
-            return;
+        //if (IsAttackking())
+        //    return;
         ResetAnimationParameters();
         _monsterAnimator.SetTrigger("HIT");
-        _monsterAnimator.SetFloat("HIT_TYPE", 2.0f);
-
-
+        _monsterAnimator.SetFloat("HIT_TYPE", 0.0f, 0.01f, Time.deltaTime);
     }
 
     public void SetStateHit_M()
     {
-        if (_monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || _monsterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
-            return;
+        //if (IsAttackking())
+        //    return;
         ResetAnimationParameters();
         _monsterAnimator.SetTrigger("HIT");
-        _monsterAnimator.SetFloat("HIT_TYPE", 3.0f);
+        _monsterAnimator.SetFloat("HIT_TYPE", 1.0f, 0.01f, Time.deltaTime);
     }
 
+    void ResetHitDirection()
+    {
+        hitDirection = Vector3.zero;
+   
+
+    }
     public void MonsterAnimationControl()
     {
         switch ((int)monsstate)
@@ -250,6 +276,7 @@ public class MonsterManager : MonoBehaviour
         _monsterAnimator.ResetTrigger("WALK");
         //_monsterAnimator.ResetTrigger("DASH");
         _monsterAnimator.ResetTrigger("JUMP");
+        _monsterAnimator.ResetTrigger("HIT");
     }
     void ResetHitAnimation()
     {
