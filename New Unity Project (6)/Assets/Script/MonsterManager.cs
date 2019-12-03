@@ -39,6 +39,7 @@ public class MonsterManager : MonoBehaviour
     private GameObject Player;
     private float _moveSpeed = 5.0f;
     private float _dashSpeed = 10.0f;
+
     private Animator _monsterAnimator;
     private bool IsAttackable = true;
     public Vector3 hitDirection = Vector3.zero;

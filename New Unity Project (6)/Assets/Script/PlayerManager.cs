@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum CharState                                                          //상태
 {
-    IDLE, MOVE, AVOID, ATTACK1, ATTACK2, ATTACK3,HIT
+    IDLE, MOVE, AVOID, ATTACK1, ATTACK2, ATTACK3, SMASH,HIT
 }
 
 public struct CharStats                                                          //스텟
@@ -21,11 +21,12 @@ public class PlayerManager : MonoBehaviour
 {
     private float _moveSpeed = 10.0f;
     private float _runSpeed = 15.0f;
+    float clickTime = 0f;
     public Animator _playerAnimator;
     private Vector3 AvoidEndtPos;
     private bool isAvoid;
     private int AttackType;
-
+    GameObject skillTable;
     public CharStats charStats;
 
     public CharState charstate;
@@ -47,7 +48,8 @@ public class PlayerManager : MonoBehaviour
         charStats._avoidDirection = Vector3.back;
         charStats.IsAvoidable = true;
         charStats.avoidCooltime = 3.0f;
-       
+        skillTable = GameObject.Find("UI").transform.Find("SkillTable").gameObject;
+
     }
 
     private void OnTriggerEnter(Collider col)
@@ -89,6 +91,9 @@ public class PlayerManager : MonoBehaviour
                 _playerAnimator.SetTrigger("ATTACK3");
                 break;
             case 6:
+                _playerAnimator.SetTrigger("SMASH");
+                break;
+            case 7:
                 _playerAnimator.SetTrigger("HIT");
                 break;
         }
@@ -297,12 +302,20 @@ public class PlayerManager : MonoBehaviour
 
     private void SetAttack()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
-
             if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
             {
                 charstate = CharState.ATTACK2;
+                
+                clickTime = clickTime + Time.deltaTime*10f ;
+                Debug.Log(clickTime);
+                if (clickTime > 4.8f)
+                {
+                    Time.timeScale = 0.01F;
+                    Time.fixedDeltaTime = 0.02F * Time.timeScale;
+                    skillTable.gameObject.SetActive(true);
+                }
             }
 
             else if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
@@ -314,10 +327,10 @@ public class PlayerManager : MonoBehaviour
             else
             {
                 charstate = CharState.ATTACK1;
+                return;
 
             }
         }
-    
     }
     void CreatSwordCollider()
     {
