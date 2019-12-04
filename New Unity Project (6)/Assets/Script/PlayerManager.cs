@@ -302,20 +302,12 @@ public class PlayerManager : MonoBehaviour
 
     private void SetAttack()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
             {
                 charstate = CharState.ATTACK2;
                 
-                clickTime = clickTime + Time.deltaTime*10f ;
-                Debug.Log(clickTime);
-                if (clickTime > 4.8f)
-                {
-                    Time.timeScale = 0.01F;
-                    Time.fixedDeltaTime = 0.02F * Time.timeScale;
-                    skillTable.gameObject.SetActive(true);
-                }
             }
 
             else if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))

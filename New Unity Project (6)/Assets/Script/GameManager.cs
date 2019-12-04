@@ -27,10 +27,17 @@ public class GameManager : MonoBehaviour
             Debug.Log("tab");
             pos.anchoredPosition = Vector2.MoveTowards(pos.anchoredPosition, new Vector2(-702f,200f),Time.deltaTime*600f);
         }
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            
-           
+
+            clickTime = clickTime + Time.deltaTime * 10f;
+            Debug.Log(clickTime);
+            if (clickTime > 3.8f)
+            {
+                Time.timeScale = 0.01F;
+                Time.fixedDeltaTime = 0.02F * Time.timeScale;
+                skillTable.gameObject.SetActive(true);
+            }
         }
         if (Input.GetKeyUp(KeyCode.Tab))
         {
