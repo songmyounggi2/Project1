@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     RectTransform pos;
     GameObject skillTable;
+    GameObject blackBox;
     Vector2 firstPos;
     float clickTime = 0f;
     bool questTab = false;
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         skillTable = GameObject.Find("UI").transform.Find("SkillTable").gameObject;
+        blackBox = GameObject.Find("UI").transform.Find("BlackBox").gameObject;
         pos = GameObject.Find("Quest").GetComponent<RectTransform>();
         firstPos = pos.anchoredPosition;
 
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 0.01F;
                 Time.fixedDeltaTime = 0.02F * Time.timeScale;
                 skillTable.gameObject.SetActive(true);
+                blackBox.gameObject.SetActive(true);
             }
         }
         if (Input.GetKeyUp(KeyCode.Tab))
