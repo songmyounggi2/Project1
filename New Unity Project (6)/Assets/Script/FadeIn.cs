@@ -40,10 +40,10 @@ public class FadeIn : MonoBehaviour
         }
         start = 1f;
         end = 0f;
-        StartCoroutine("fadeoutplay");    //코루틴 실행
+        StartCoroutine("fadeinplay");    //코루틴 실행
     }
 
-    IEnumerator fadeoutplay()
+    IEnumerator fadeinplay()
     {
         isPlaying = true;
         Color fadecolor = fadeImg.color;
@@ -61,10 +61,10 @@ public class FadeIn : MonoBehaviour
             yield return null;
 
         }
-        StartCoroutine("fadeinplay");
+        StartCoroutine("fadeoutplay");
         isPlaying = false;
     }
-    IEnumerator fadeinplay()
+    IEnumerator fadeoutplay()
     {
         Color fadecolor = fadeImg.color;
         time = 0f;
@@ -78,7 +78,7 @@ public class FadeIn : MonoBehaviour
 
             yield return null;
         }
-        GameObject.Find("TitleScreen").gameObject.SetActive(false);
+        //GameObject.Find("TitleScreen").gameObject.SetActive(false);
     }
     // Start is called before the first frame update
     void Start()

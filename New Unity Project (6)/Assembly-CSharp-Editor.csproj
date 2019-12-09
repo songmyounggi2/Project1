@@ -60,9 +60,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\KriptoFX\MeshEffect\Scripts\Editor\MeshRendererEditor.cs" />
-    <Compile Include="Assets\KriptoFX\MeshEffect\Shaders\Editor\ME_CustomShaderGUI.cs" />
-    <Compile Include="Assets\KriptoFX\MeshEffect\Shaders\Editor\ME_UberParticleGUI.cs" />
     <Compile Include="Assets\PostProcessing\Editor\Attributes\PostProcessingModelEditorAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Editor\Models\AmbientOcclusionModelEditor.cs" />
     <Compile Include="Assets\PostProcessing\Editor\Models\AntialiasingModelEditor.cs" />
@@ -97,7 +94,12 @@
     <Compile Include="Assets\PostProcessing\Editor\Utils\EditorResources.cs" />
     <Compile Include="Assets\PostProcessing\Editor\Utils\FxStyles.cs" />
     <Compile Include="Assets\PostProcessing\Editor\Utils\ReflectionUtils.cs" />
-    <Compile Include="Assets\Radial Menu Framework\Scripts\Editor\RFM_RadialMenu_Editor.cs" />
+    <Compile Include="Assets\Prefabs\KriptoFX\MeshEffect\Scripts\Editor\MeshRendererEditor.cs" />
+    <Compile Include="Assets\Prefabs\KriptoFX\MeshEffect\Shaders\Editor\ME_CustomShaderGUI.cs" />
+    <Compile Include="Assets\Prefabs\KriptoFX\MeshEffect\Shaders\Editor\ME_UberParticleGUI.cs" />
+    <Reference Include="Cinemachine">
+      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
@@ -107,17 +109,14 @@
     <Reference Include="Unity.CollabProxy.Editor">
       <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="com.unity.cinemachine.editor">
+      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
-    </Reference>
-    <Reference Include="Cinemachine">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
-    </Reference>
-    <Reference Include="com.unity.cinemachine.editor">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>D:/2018.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
