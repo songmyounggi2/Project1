@@ -24,20 +24,17 @@ public class MonsterHit : MonoBehaviour
             {
                 direction = Vector3.left;
                 hitPosition = this.transform.position;
-                Debug.Log("왼쪽");
             }
             else if (this.gameObject.tag == "Right")
             {
                 direction = Vector3.right;
                 hitPosition = this.transform.position;
-                Debug.Log("오른쪽");
             }
 
             else
             { 
                 direction = Vector3.forward;
                 hitPosition = this.transform.position;
-                Debug.Log("중앙");
             }
 
             GameObject.Find("Juggernaut").GetComponent<MonsterManager>().hitDirection = direction;

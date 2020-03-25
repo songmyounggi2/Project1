@@ -20,19 +20,11 @@ public class FadeIn : MonoBehaviour
     private void Awake()
     {
         fadeImg = GetComponent<Image>();
-
-        OutStartFadeAnim();
+        StartFadeAnim();
+        
     }
 
-    public void InStartFadeAnim()
-    {
-        if (isPlaying == true) //중복재생방지
-        {
-            return;
-        }
-        StartCoroutine("fadeIntanim");
-    }
-    public void OutStartFadeAnim()
+    public void StartFadeAnim()
     {
         if (isPlaying == true) //중복재생방지
         {
@@ -40,11 +32,16 @@ public class FadeIn : MonoBehaviour
         }
         start = 1f;
         end = 0f;
-        StartCoroutine("fadeinplay");    //코루틴 실행
+        if (this.gameObject.tag == "Fadein"|| this.gameObject.tag == "Fadeinout")
+            StartCoroutine("fadeinplay");
+        else if (this.gameObject.tag == "Fadeout")
+            StartCoroutine("fadeoutplay");
     }
 
     IEnumerator fadeinplay()
     {
+        //Debug.Log(fadeImg.color);
+
         isPlaying = true;
         Color fadecolor = fadeImg.color;
         time = 0f;
@@ -61,11 +58,18 @@ public class FadeIn : MonoBehaviour
             yield return null;
 
         }
-        StartCoroutine("fadeoutplay");
+
+        if (this.gameObject.tag == "Fadeinout")
+        {
+            StartCoroutine("fadeoutplay");
+        }
+        else 
+            gameObject.SetActive(false);
         isPlaying = false;
     }
     IEnumerator fadeoutplay()
     {
+        isPlaying = true;
         Color fadecolor = fadeImg.color;
         time = 0f;
         fadecolor.a = Mathf.Lerp(end, start, time);
@@ -78,7 +82,8 @@ public class FadeIn : MonoBehaviour
 
             yield return null;
         }
-        //GameObject.Find("TitleScreen").gameObject.SetActive(false);
+        isPlaying = false;
+        //gameObject.SetActive(false);
     }
     // Start is called before the first frame update
     void Start()

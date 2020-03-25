@@ -144,13 +144,17 @@
     <Compile Include="Assets\Script\DialogText.cs" />
     <Compile Include="Assets\Script\FadeIn.cs" />
     <Compile Include="Assets\Script\GameManager.cs" />
+    <Compile Include="Assets\Script\JsonManager.cs" />
     <Compile Include="Assets\Script\lockOn.cs" />
     <Compile Include="Assets\Script\MonsterHit.cs" />
     <Compile Include="Assets\Script\MonsterManager.cs" />
+    <Compile Include="Assets\Script\MouseUp.cs" />
     <Compile Include="Assets\Script\PlayerManager.cs" />
     <Compile Include="Assets\Script\Playermove.cs" />
+    <Compile Include="Assets\Script\ScenesManager.cs" />
     <Compile Include="Assets\Script\Story.cs" />
     <Compile Include="Assets\Script\SwordManager.cs" />
+    <Compile Include="Assets\Script\TutoririalControl.cs" />
     <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
     <None Include="Assets\Prefabs\KriptoFX\BloodFX\Shaders\Blood.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\MotionBlur.cginc" />
@@ -435,6 +439,9 @@
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>D:/2018.3.14f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="LitJson">
+      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Assets/Plugins/LitJson.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>

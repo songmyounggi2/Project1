@@ -9,6 +9,11 @@ TagManager:
   - Left
   - Right
   - Middle
+  - Fadein
+  - Fadeout
+  - Fadeinout
+  - Icon
+  - SkillName
   layers:
   - Default
   - TransparentFX

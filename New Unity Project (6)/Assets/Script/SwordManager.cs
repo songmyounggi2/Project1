@@ -20,17 +20,15 @@ public class SwordManager : MonoBehaviour
     public void CreateSwordCollider()
     {
         swordCollider.enabled = true;
+        Debug.Log("생성");
     }
     private void OnTriggerEnter(Collider col)
     {
-
-
-
         if (col.gameObject.tag == "Left"|| col.gameObject.tag == "Right" || col.gameObject.tag == "Mibble")
         {
 
             swordCollider.enabled = false;
-           
+            Debug.Log("소멸");
         }
 
     }

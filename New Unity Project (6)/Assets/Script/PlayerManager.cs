@@ -10,6 +10,7 @@ public enum CharState                                                          /
 
 public struct CharStats                                                          //스텟
 {
+    public string Name;
     public int HP;
     public int _moveSpeed;
     public Vector3 _avoidDirection;
@@ -17,16 +18,30 @@ public struct CharStats                                                         
     public float avoidCooltime;
 }
 
+//public class CharStats                                                          //스텟
+//{
+//    public string Name;
+//    public int HP;
+//    public int _moveSpeed;
+//    public Vector3 _avoidDirection;
+//    public bool IsAvoidable;
+//    public float avoidCooltime;
+
+//    public CharStats(string Name, int HP, int _moveSpeed, Vector3 _avoidDirection, bool IsAvoidable, float avoidCooltime)
+//    {
+//        this.Name = Name;
+//    }
+//}
+
 public class PlayerManager : MonoBehaviour
 {
     private float _moveSpeed = 10.0f;
-    private float _runSpeed = 15.0f;
-    float clickTime = 0f;
+   // private float _runSpeed = 15.0f;
+   // float clickTime = 0f;
     public Animator _playerAnimator;
     private Vector3 AvoidEndtPos;
     private bool isAvoid;
-    private int AttackType;
-    GameObject skillTable;
+    //private int AttackType;
     public CharStats charStats;
 
     public CharState charstate;
@@ -44,11 +59,11 @@ public class PlayerManager : MonoBehaviour
         PlayerAnimationControl();
         isAvoid = false;
         AvoidEndtPos = Vector3.zero;
-        AttackType = 0;
+        //AttackType = 0;
+        charStats.Name = null;
         charStats._avoidDirection = Vector3.back;
         charStats.IsAvoidable = true;
         charStats.avoidCooltime = 3.0f;
-        skillTable = GameObject.Find("UI").transform.Find("SkillTable").gameObject;
 
     }
 
@@ -56,13 +71,13 @@ public class PlayerManager : MonoBehaviour
     {
         if (col.gameObject.tag == "Left")
         {
-            Debug.Log("맞음");
+
             charstate = CharState.HIT;
             PlayerAnimationControl();
         }
         else if (col.gameObject.tag == "Right")
         {
-            Debug.Log("맞음");
+   
             charstate = CharState.HIT;
             PlayerAnimationControl();
         }
@@ -275,12 +290,12 @@ public class PlayerManager : MonoBehaviour
         {
             isAvoid = false;
            // gameObject.GetComponent<lockOn>().enabled = true;
-            _playerAnimator.SetInteger("AVOID_TYPE",0);
+            _playerAnimator.SetInteger("AVOID_TYPE",2);
             charstate = CharState.MOVE;
-            Debug.Log("그만도망가");
+
             
         }
-        Debug.Log("욍포지션" + AvoidEndtPos);
+
         transform.position = Vector3.MoveTowards(transform.position, AvoidEndtPos, 15 * Time.deltaTime);
        
 
@@ -307,12 +322,14 @@ public class PlayerManager : MonoBehaviour
             if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
             {
                 charstate = CharState.ATTACK2;
-                
+                GameObject.Find("GameManager").GetComponent<GameManager>().useSkill = true;
+                Debug.Log("가가"); 
             }
 
             else if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
             {
                 charstate = CharState.ATTACK3;
+                
             }
             else if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
                 charstate = CharState.IDLE;

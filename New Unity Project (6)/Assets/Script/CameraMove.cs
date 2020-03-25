@@ -40,10 +40,9 @@ public class CameraMove : MonoBehaviour
         _yCameraAngles = angles.x;
 
     }
-
-    // Update is called once per frame
-    void Update()
+    void CameraRotate()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         _xCameraAngles += Input.GetAxis("Mouse X") * _xCameraSpeed * 0.1f;
         _yCameraAngles -= Input.GetAxis("Mouse Y") * _yCameraSpeed * 0.1f;
 
@@ -54,6 +53,17 @@ public class CameraMove : MonoBehaviour
 
         transform.rotation = cameraRotation;
         transform.position = cameraPosition;
-        
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        if (GameObject.Find("GameManager").GetComponent<GameManager>().skillTable.activeSelf == true)
+        {
+                Cursor.lockState = CursorLockMode.None;
+        }
+        else
+            CameraRotate();
+
+
     }
 }

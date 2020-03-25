@@ -32,7 +32,7 @@ struct MonsStats                                                          //스�
         AttackRange = MonsAttackRange;
         Perception = MonsPerception;
     }
-
+    
 }
 public class MonsterManager : MonoBehaviour
 {
@@ -48,7 +48,7 @@ public class MonsterManager : MonoBehaviour
 
     MonsStats[] mons = new MonsStats[]
          {
-            new MonsStats("Snow","Ogre",1500,150,10f,20f,5.0f,35.0f,6.5f,false),
+            new MonsStats("Snow","Ogre",1500,150,10f,20f,15.0f,35.0f,6.5f,false),
          };
 
     // 기본 움직임 
@@ -123,7 +123,12 @@ public class MonsterManager : MonoBehaviour
             }
         }
     }
-
+    void SetStateWalk()
+    {
+        ResetAnimationParameters();
+        monsstate = MansState.walk;
+        MonsterAnimationControl();
+    }
     void SetStateIdle()
     {
         ResetHitAnimation();
@@ -136,13 +141,7 @@ public class MonsterManager : MonoBehaviour
         this.gameObject.GetComponent<lockOn>().enabled = true;
     }
     
-    void SetStateWalk()
-    {
 
-        ResetAnimationParameters();
-        monsstate = MansState.walk;
-        MonsterAnimationControl();
-    }
 
     void SetStateChange()
     {

@@ -2,6 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using LitJson;
+using System.IO;
+
+public class Player
+{
+    public string Name;
+    public int HP;
+    public int Power;
+    public int MoveSpeed;
+
+    public Player(string name, int hp, int power, int movespeed)
+    {
+        Name = name;
+        HP = hp;
+        Power = power;
+        MoveSpeed = movespeed;
+    }
+}
 
 public class DialogText : MonoBehaviour
 {
@@ -12,12 +30,17 @@ public class DialogText : MonoBehaviour
     string PlayerName;
     public Animator PubOwner;
 
+    public List<Player> playerList = new List<Player>();
+
+
     // Start is called before the first frame update
     void Start()
     {
-        PlayerName = "주인공";
+        //.Find("UI").transform.Find("Fadein").gameObject.SetActive(true);
+        PlayerName = "???";
+
         StartCoroutine(TextPractice_NoName());
-        //PubOwner = GameObject.Find("PubOwner").GetComponent<Animator>();
+        
     }
 
     // Update is called once per frame
@@ -28,49 +51,69 @@ public class DialogText : MonoBehaviour
 
     IEnumerator TextPractice_NoName()
     {
-        PubOwner.SetTrigger("DIALOG");
+        
+        // PubOwner.SetTrigger("DIALOG");
+
         yield return StartCoroutine(NormalChat(PlayerName, "Ask and go to the blue"));
+        Debug.Log("dd");
         yield return new WaitForSeconds(3f);
-        yield return StartCoroutine(NormalChat("주인장", "?!!"));
-        yield return new WaitForSeconds(3f);
-        yield return StartCoroutine(NormalChat("주인장", "What?! \n Hey puppy!We have only beer!"));
+        yield return StartCoroutine(NormalChat("Owner", "?!!"));
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(NormalChat("Owner", "What?! \n Hey puppy!We have only beer!"));
         yield return new WaitForSeconds(3f);
         yield return StartCoroutine(NormalChat(PlayerName, "Ask and go to the blue..."));
-        yield return new WaitForSeconds(3f);
-        yield return StartCoroutine(NormalChat("주인장", "Are you serious? \n Don’t blame me for what happened! \n so, what's your name ?"));
+        yield return new WaitForSeconds(2.3f);
+        yield return StartCoroutine(NormalChat("Owner", "hahahaha!! Seriously ? \n Don’t blame me for what happened! \n so, what's your name ?"));
         yield return new WaitForSeconds(4f);
         EndFirstScript();
-        
+       
     }
     IEnumerator TextPractice()
     {
+         yield return StartCoroutine(NormalChat(PlayerName, PlayerName+"...\n"+ PlayerName));
+        yield return new WaitForSeconds(3f);
         PubOwner.SetTrigger("FOLLOW");
-        yield return StartCoroutine(NormalChat(PlayerName, PlayerName+"...\n"+ PlayerName));
+        yield return StartCoroutine(NormalChat("Owner", "ok... "+ PlayerName + "\nFollow me"));
         yield return new WaitForSeconds(3f);
-        yield return StartCoroutine(NormalChat("주인장", "ok "+ PlayerName + "\nFollow me"));
-        yield return new WaitForSeconds(3f);
+        GameObject.Find("UI").transform.Find("Fadeout").gameObject.SetActive(true);
     }
     void EndFirstScript()
     {
         PubOwner.SetTrigger("IDLE");
         inputField.gameObject.SetActive(true);
         ChatText.gameObject.SetActive(false);
+        CharacterName.gameObject.SetActive(false);
         
+
     }
     public void SetName()
     {
         PlayerName = inputField.text;
+        SaveName(PlayerName);
+        // charStats.Name = PlayerName;
         inputField.gameObject.SetActive(false);
         ChatText.gameObject.SetActive(true);
+        CharacterName.gameObject.SetActive(true);
+        
         StartCoroutine(TextPractice());
+
+    }
+    public void SaveName(string playerName)
+    {
+        playerList.Add(new Player(playerName, 50 , 3 , 1));
+        //player.Name = playerName;
+
+        JsonData PlayerStateJson = JsonMapper.ToJson(playerList);
+
+        File.WriteAllText(Application.dataPath + "/Player.json", PlayerStateJson.ToString());
+
     }
     IEnumerator NormalChat(string narrator, string narration)
     {
-        int a = 0;
         CharacterName.text = narrator;
         writerText = "";
 
-        for (a = 0; a < narration.Length; a++)
+        for (int a = 0; a < narration.Length; a++)
         {
             writerText += narration[a];
             ChatText.text = writerText;
@@ -78,19 +121,19 @@ public class DialogText : MonoBehaviour
         }
 
     }
-    IEnumerator Name(string narrator, string narration)
-    {
-        int a = 0;
-        CharacterName.text = narrator;
-        writerText = "";
+    //IEnumerator Name(string narrator, string narration)
+    //{
+    //    int a = 0;
+    //    CharacterName.text = narrator;
+    //    writerText = "";
 
-        for (a = 0; a < narration.Length; a++)
-        {
-            writerText += narration[a];
-            ChatText.text = writerText;
-            yield return new WaitForSeconds(0.01f);
-        }
+    //    for (a = 0; a < narration.Length; a++)
+    //    {
+    //        writerText += narration[a];
+    //        ChatText.text = writerText;
+    //        yield return new WaitForSeconds(0.01f);
+    //    }
 
-    }
+    //}
 
 }
