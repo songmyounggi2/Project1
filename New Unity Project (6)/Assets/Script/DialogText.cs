@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using LitJson;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class Player
 {
@@ -51,12 +52,12 @@ public class DialogText : MonoBehaviour
 
     IEnumerator TextPractice_NoName()
     {
-        
-        // PubOwner.SetTrigger("DIALOG");
 
+
+        
         yield return StartCoroutine(NormalChat(PlayerName, "Ask and go to the blue"));
-        Debug.Log("dd");
         yield return new WaitForSeconds(3f);
+        PubOwner.SetTrigger("DIALOG");
         yield return StartCoroutine(NormalChat("Owner", "?!!"));
         yield return new WaitForSeconds(2f);
         yield return StartCoroutine(NormalChat("Owner", "What?! \n Hey puppy!We have only beer!"));
@@ -76,6 +77,8 @@ public class DialogText : MonoBehaviour
         yield return StartCoroutine(NormalChat("Owner", "ok... "+ PlayerName + "\nFollow me"));
         yield return new WaitForSeconds(3f);
         GameObject.Find("UI").transform.Find("Fadeout").gameObject.SetActive(true);
+        yield return new WaitForSeconds(1.8f);
+        SceneManager.LoadScene("SampleScene");
     }
     void EndFirstScript()
     {
@@ -105,7 +108,8 @@ public class DialogText : MonoBehaviour
 
         JsonData PlayerStateJson = JsonMapper.ToJson(playerList);
 
-        File.WriteAllText(Application.dataPath + "/Player.json", PlayerStateJson.ToString());
+        File.WriteAllText(Application.dataPath + "/Resource/Player.json", PlayerStateJson.ToString());
+        Debug.Log(playerList[0].Name);
 
     }
     IEnumerator NormalChat(string narrator, string narration)
@@ -121,19 +125,5 @@ public class DialogText : MonoBehaviour
         }
 
     }
-    //IEnumerator Name(string narrator, string narration)
-    //{
-    //    int a = 0;
-    //    CharacterName.text = narrator;
-    //    writerText = "";
-
-    //    for (a = 0; a < narration.Length; a++)
-    //    {
-    //        writerText += narration[a];
-    //        ChatText.text = writerText;
-    //        yield return new WaitForSeconds(0.01f);
-    //    }
-
-    //}
 
 }

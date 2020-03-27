@@ -18,31 +18,30 @@ public class TutoririalControl : MonoBehaviour
 
     IEnumerator fadeoutplay()
     {
-        Tutorial_Move = true;
         yield return new WaitForSeconds(2.5f);
+        Tutorial_Move = true;
         Time.timeScale = 0.0F;
         Time.fixedDeltaTime = 0.02F * Time.timeScale;
         transform.Find("Move").gameObject.SetActive(true);
     }
     IEnumerator avoid()
     {
-        Tutorial_Avoid = true;
         yield return new WaitForSeconds(2.5f);
+        Tutorial_Avoid = true;
         Time.timeScale = 0.0F;
         Time.fixedDeltaTime = 0.02F * Time.timeScale;
         transform.Find("Avoid").gameObject.SetActive(true);
     }
     IEnumerator Attack()
     {
-        Tutorial_Attack = true;
         yield return new WaitForSeconds(2.5f);
+        Tutorial_Attack = true;
         Time.timeScale = 0.0F;
         Time.fixedDeltaTime = 0.02F * Time.timeScale;
         transform.Find("Attack").gameObject.SetActive(true);
     }
     IEnumerator Attack_skill()
     {
-        
         yield return new WaitForSeconds(5.5f);
         Tutorial_SkillAttack = true;
         Time.timeScale = 0.0F;
@@ -51,8 +50,8 @@ public class TutoririalControl : MonoBehaviour
     }
     IEnumerator Tap()
     {
-        Tutorial_Tab = true;
         yield return new WaitForSeconds(5.5f);
+        Tutorial_Tab = true;
         Time.timeScale = 0.0F;
         Time.fixedDeltaTime = 0.02F * Time.timeScale;
         transform.Find("Tab").gameObject.SetActive(true);
@@ -66,16 +65,19 @@ public class TutoririalControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.W)|| Input.GetKey(KeyCode.A)|| Input.GetKey(KeyCode.S)|| Input.GetKey(KeyCode.D))
-        {
-            if (Tutorial_Move == false)
-                return;
-            transform.Find("Move").gameObject.SetActive(false);
-            Time.timeScale = 1f;
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
-            Tutorial_Move = false;
-            StartCoroutine(avoid());
-        }
+      
+        
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
+                if (Tutorial_Move == false)
+                    return;
+                transform.Find("Move").gameObject.SetActive(false);
+                Time.timeScale = 1f;
+                Time.fixedDeltaTime = 0.02f * Time.timeScale;
+                Tutorial_Move = false;
+                StartCoroutine(avoid());
+            }
+        
         if((Input.GetKey(KeyCode.Space)))
         {
             if (Tutorial_Avoid == false)

@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/Scenes/Pub.unity
-  isLoaded: 1
-  isActive: 1

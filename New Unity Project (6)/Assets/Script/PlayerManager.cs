@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using LitJson;
 
 
 public enum CharState                                                          //상태
@@ -60,10 +62,28 @@ public class PlayerManager : MonoBehaviour
         isAvoid = false;
         AvoidEndtPos = Vector3.zero;
         //AttackType = 0;
-        charStats.Name = null;
+        LoadPlayerStats();
+        //charStats.Name = File.ReadAllText(Application.dataPath + "/Resource/Player.json");
         charStats._avoidDirection = Vector3.back;
         charStats.IsAvoidable = true;
         charStats.avoidCooltime = 3.0f;
+
+    }
+    void LoadPlayerStats()
+    {
+        string Jsonstring = File.ReadAllText(Application.dataPath + "/Resource/Player.json");
+        JsonData itemData = JsonMapper.ToObject(Jsonstring);
+        ParsingJsonPlayerStats(itemData);
+    }
+    void ParsingJsonPlayerStats(JsonData stats)
+    {
+        for (int i = 0; i < stats.Count; i++)
+        {
+            
+            charStats.Name = (string)stats[i]["Name"];
+            Debug.Log(charStats.Name);
+        }
+
 
     }
 
@@ -298,8 +318,9 @@ public class PlayerManager : MonoBehaviour
 
         transform.position = Vector3.MoveTowards(transform.position, AvoidEndtPos, 15 * Time.deltaTime);
        
-
     }
+   
+
     //void SetJump()
     //{
     //    ResetAnimationParameters();

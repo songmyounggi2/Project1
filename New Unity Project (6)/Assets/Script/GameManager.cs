@@ -33,8 +33,6 @@ public class GameManager : MonoBehaviour
     void PlayerInput()
     {
 
-        
-
         if (Input.GetMouseButton(0))
         {
             clickTime = clickTime + Time.deltaTime * 10f;
