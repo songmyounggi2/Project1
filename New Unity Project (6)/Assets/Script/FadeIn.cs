@@ -79,7 +79,6 @@ public class FadeIn : MonoBehaviour
             time += Time.deltaTime / FadeTime;
             fadecolor.a = Mathf.Lerp(end, start, time);
             fadeImg.color = fadecolor;
-
             yield return null;
         }
         isPlaying = false;

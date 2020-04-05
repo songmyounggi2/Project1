@@ -7,7 +7,14 @@ using LitJson;
 
 public enum CharState                                                          //상태
 {
-    IDLE, MOVE, AVOID, ATTACK1, ATTACK2, ATTACK3, SMASH,HIT
+    IDLE,
+    MOVE,
+    AVOID,
+    ATTACK1,
+    ATTACK2,
+    ATTACK3,
+    SMASH,
+    HIT
 }
 
 public struct CharStats                                                          //스텟
@@ -20,43 +27,29 @@ public struct CharStats                                                         
     public float avoidCooltime;
 }
 
-//public class CharStats                                                          //스텟
-//{
-//    public string Name;
-//    public int HP;
-//    public int _moveSpeed;
-//    public Vector3 _avoidDirection;
-//    public bool IsAvoidable;
-//    public float avoidCooltime;
-
-//    public CharStats(string Name, int HP, int _moveSpeed, Vector3 _avoidDirection, bool IsAvoidable, float avoidCooltime)
-//    {
-//        this.Name = Name;
-//    }
-//}
 
 public class PlayerManager : MonoBehaviour
 {
-    private float _moveSpeed = 10.0f;
-   // private float _runSpeed = 15.0f;
-   // float clickTime = 0f;
-    public Animator _playerAnimator;
+    
+    private float moveSpeed = 10.0f;
+    public Animator playerAnimator;
     private Vector3 AvoidEndtPos;
     private bool isAvoid;
-    //private int AttackType;
     public CharStats charStats;
 
     public CharState charstate;
 
+  
+
     private void Awake()
     {
-      
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        _playerAnimator = GetComponent<Animator>();
+        playerAnimator = GetComponent<Animator>();
         charstate = CharState.IDLE;
         PlayerAnimationControl();
         isAvoid = false;
@@ -108,28 +101,28 @@ public class PlayerManager : MonoBehaviour
         switch ((int)charstate)
         {
             case 0:
-                _playerAnimator.SetTrigger("IDLE");
+                playerAnimator.SetTrigger("IDLE");
                 break;
             case 1:
-                _playerAnimator.SetTrigger("MOVE");
+                playerAnimator.SetTrigger("MOVE");
                 break;
             case 2:
-                _playerAnimator.SetTrigger("AVOID");
+                playerAnimator.SetTrigger("AVOID");
                 break;
             case 3:
-                _playerAnimator.SetTrigger("ATTACK1");
+                playerAnimator.SetTrigger("ATTACK1");
                 break;
             case 4:
-                _playerAnimator.SetTrigger("ATTACK2");
+                playerAnimator.SetTrigger("ATTACK2");
                 break;
             case 5:
-                _playerAnimator.SetTrigger("ATTACK3");
+                playerAnimator.SetTrigger("ATTACK3");
                 break;
             case 6:
-                _playerAnimator.SetTrigger("SMASH");
+                playerAnimator.SetTrigger("SMASH");
                 break;
             case 7:
-                _playerAnimator.SetTrigger("HIT");
+                playerAnimator.SetTrigger("HIT");
                 break;
         }
     }
@@ -158,7 +151,7 @@ public class PlayerManager : MonoBehaviour
     bool CheckIsAttacking()
     {
 
-        if (this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2") || this._playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
+        if (this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2") || this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
             return true;
         else
             return false;
@@ -184,10 +177,10 @@ public class PlayerManager : MonoBehaviour
             if (isAvoid)
                 return;
 
-            this.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
+            this.transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
             charstate = CharState.MOVE;
-            _playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
-            _playerAnimator.SetFloat("MOVE_DIRECTION_Y",-1f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_Y",-1f, transtime, Time.deltaTime);
             charStats._avoidDirection = Vector3.left;
 
         
@@ -197,10 +190,10 @@ public class PlayerManager : MonoBehaviour
             if (isAvoid)
                 return;
 
-            this.transform.Translate((Vector3.back+Vector3.left) * _moveSpeed * Time.deltaTime * 0.05f);
+            this.transform.Translate((Vector3.back+Vector3.left) * moveSpeed * Time.deltaTime * 0.05f);
             charstate = CharState.MOVE;
-            _playerAnimator.SetFloat("MOVE_DIRECTION_X", -1f, transtime, Time.deltaTime);
-            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_X", -1f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
            
         }
         if (Input.GetKey(KeyCode.S))
@@ -208,10 +201,10 @@ public class PlayerManager : MonoBehaviour
             if (isAvoid)
                 return;
             
-            this.transform.Translate(Vector3.back * _moveSpeed * Time.deltaTime);
+            this.transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
             charstate = CharState.MOVE;
-            _playerAnimator.SetFloat("MOVE_DIRECTION_X", 0f, transtime, Time.deltaTime);
-            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_X", 0f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
             charStats._avoidDirection = Vector3.back;
          
         }
@@ -220,10 +213,10 @@ public class PlayerManager : MonoBehaviour
             if (isAvoid)
                 return;
 
-            this.transform.Translate((Vector3.back + Vector3.right) * _moveSpeed * Time.deltaTime * 0.05f);
+            this.transform.Translate((Vector3.back + Vector3.right) * moveSpeed * Time.deltaTime * 0.05f);
             charstate = CharState.MOVE;
-            _playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
-            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
        
 
         }
@@ -233,10 +226,10 @@ public class PlayerManager : MonoBehaviour
             if (isAvoid)
                 return;
 
-            this.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
+            this.transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
             charstate = CharState.MOVE;
-            _playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
-            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", 0f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_Y", 0f, transtime, Time.deltaTime);
             charStats._avoidDirection = Vector3.right;
         
         }
@@ -245,10 +238,10 @@ public class PlayerManager : MonoBehaviour
             if (isAvoid)
                 return;
 
-            this.transform.Translate((Vector3.right + Vector3.forward) * _moveSpeed * Time.deltaTime * 0.05f);
+            this.transform.Translate((Vector3.right + Vector3.forward) * moveSpeed * Time.deltaTime * 0.05f);
             charstate = CharState.MOVE;
-            _playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
-            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", 1f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_X", 1f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_Y", 1f, transtime, Time.deltaTime);
 
           
         }
@@ -257,10 +250,10 @@ public class PlayerManager : MonoBehaviour
             if (isAvoid)
                 return;
 
-            this.transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);
+            this.transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
             charstate = CharState.MOVE;
-            _playerAnimator.SetFloat("MOVE_DIRECTION_X", 0f, transtime, Time.deltaTime);
-            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", 1f , transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_X", 0f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_Y", 1f , transtime, Time.deltaTime);
 
    
         }
@@ -270,10 +263,10 @@ public class PlayerManager : MonoBehaviour
             if (isAvoid)
                 return;
 
-            this.transform.Translate((Vector3.forward + Vector3.left) * _moveSpeed * Time.deltaTime * 0.05f);
+            this.transform.Translate((Vector3.forward + Vector3.left) * moveSpeed * Time.deltaTime * 0.05f);
             charstate = CharState.MOVE;
-            _playerAnimator.SetFloat("MOVE_DIRECTION_X", -1f, transtime, Time.deltaTime);
-            _playerAnimator.SetFloat("MOVE_DIRECTION_Y", 1f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_X", -1f, transtime, Time.deltaTime);
+            playerAnimator.SetFloat("MOVE_DIRECTION_Y", 1f, transtime, Time.deltaTime);
 
         }
 
@@ -288,7 +281,7 @@ public class PlayerManager : MonoBehaviour
             isAvoid = true;
             charstate = CharState.AVOID;
             PlayerAnimationControl();
-            _playerAnimator.SetInteger("AVOID_TYPE", 2);
+            playerAnimator.SetInteger("AVOID_TYPE", 2);
 
             yield return new WaitForSeconds(charStats.avoidCooltime);
             charStats.IsAvoidable = true;
@@ -310,7 +303,7 @@ public class PlayerManager : MonoBehaviour
         {
             isAvoid = false;
            // gameObject.GetComponent<lockOn>().enabled = true;
-            _playerAnimator.SetInteger("AVOID_TYPE",2);
+            playerAnimator.SetInteger("AVOID_TYPE",2);
             charstate = CharState.MOVE;
 
             
@@ -340,19 +333,19 @@ public class PlayerManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+            if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
             {
                 charstate = CharState.ATTACK2;
                 GameObject.Find("GameManager").GetComponent<GameManager>().useSkill = true;
                 Debug.Log("가가"); 
             }
 
-            else if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
+            else if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
             {
                 charstate = CharState.ATTACK3;
                 
             }
-            else if (_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
+            else if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
                 charstate = CharState.IDLE;
             else
             {
@@ -377,13 +370,13 @@ public class PlayerManager : MonoBehaviour
 
     void ResetAnimationParameters()
     {
-        _playerAnimator.ResetTrigger("IDLE");
-        _playerAnimator.ResetTrigger("ATTACK1");
-        _playerAnimator.ResetTrigger("ATTACK2");
-        _playerAnimator.ResetTrigger("ATTACK3");
-        _playerAnimator.ResetTrigger("MOVE");
-        _playerAnimator.ResetTrigger("AVOID");
-        _playerAnimator.ResetTrigger("HIT");
+        playerAnimator.ResetTrigger("IDLE");
+        playerAnimator.ResetTrigger("ATTACK1");
+        playerAnimator.ResetTrigger("ATTACK2");
+        playerAnimator.ResetTrigger("ATTACK3");
+        playerAnimator.ResetTrigger("MOVE");
+        playerAnimator.ResetTrigger("AVOID");
+        playerAnimator.ResetTrigger("HIT");
     }
 
     // Update is called once per frame

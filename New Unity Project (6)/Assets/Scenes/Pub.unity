@@ -2842,10 +2842,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cec2587c2119bd54d9cd4766930d7a7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChatText: {fileID: 120358666}
-  CharacterName: {fileID: 564644611}
+  chatText: {fileID: 120358666}
+  characterName: {fileID: 564644611}
   inputField: {fileID: 1366662681}
   PubOwner: {fileID: 1016710681}
+  PlayerId: 0
 --- !u!1 &516128241
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,32 +6,17 @@ using LitJson;
 using System.IO;
 using UnityEngine.SceneManagement;
 
-public class Player
-{
-    public string Name;
-    public int HP;
-    public int Power;
-    public int MoveSpeed;
 
-    public Player(string name, int hp, int power, int movespeed)
-    {
-        Name = name;
-        HP = hp;
-        Power = power;
-        MoveSpeed = movespeed;
-    }
-}
 
 public class DialogText : MonoBehaviour
 {
-    public Text ChatText;
-    public Text CharacterName;
+    public Text chatText;
+    public Text characterName;
     public InputField inputField;
     string writerText;
     string PlayerName;
     public Animator PubOwner;
-
-    public List<Player> playerList = new List<Player>();
+    public int PlayerId;
 
 
     // Start is called before the first frame update
@@ -39,8 +24,9 @@ public class DialogText : MonoBehaviour
     {
         //.Find("UI").transform.Find("Fadein").gameObject.SetActive(true);
         PlayerName = "???";
-
-        StartCoroutine(TextPractice_NoName());
+        PlayerId = 0;
+        EndFirstScript();
+        StartCoroutine(TextPractice());
         
     }
 
@@ -84,8 +70,8 @@ public class DialogText : MonoBehaviour
     {
         PubOwner.SetTrigger("IDLE");
         inputField.gameObject.SetActive(true);
-        ChatText.gameObject.SetActive(false);
-        CharacterName.gameObject.SetActive(false);
+        chatText.gameObject.SetActive(false);
+        characterName.gameObject.SetActive(false);
         
 
     }
@@ -95,32 +81,55 @@ public class DialogText : MonoBehaviour
         SaveName(PlayerName);
         // charStats.Name = PlayerName;
         inputField.gameObject.SetActive(false);
-        ChatText.gameObject.SetActive(true);
-        CharacterName.gameObject.SetActive(true);
+        chatText.gameObject.SetActive(true);
+        characterName.gameObject.SetActive(true);
         
         StartCoroutine(TextPractice());
 
     }
     public void SaveName(string playerName)
     {
-        playerList.Add(new Player(playerName, 50 , 3 , 1));
-        //player.Name = playerName;
+        numCheck();
+        DataManager.instance.playerList.Add(new Player(playerName, 50 , 3 , 1 , PlayerId));
+        Debug.Log(PlayerId);
+       //player.Name = playerName;
 
-        JsonData PlayerStateJson = JsonMapper.ToJson(playerList);
+       JsonData PlayerStateJson = JsonMapper.ToJson(DataManager.instance.playerList);
 
         File.WriteAllText(Application.dataPath + "/Resource/Player.json", PlayerStateJson.ToString());
-        Debug.Log(playerList[0].Name);
 
+        Debug.Log(DataManager.instance.playerList[0].name);
+
+    }
+    int IDCheck()
+    {
+        int idNum = 0;
+
+        for (int i = 0; i < DataManager.instance.playerList.Count; i++)
+        {
+            idNum +=DataManager.instance.playerList[i].id;
+            Debug.Log(i + "번째 아이디 " + DataManager.instance.playerList[i].id);
+        }
+        return idNum;
+    }
+    void numCheck()
+    {
+        if (IDCheck() == 11)
+            PlayerId = 100;
+        else if(IDCheck() == 1 || IDCheck() == 101)
+            PlayerId = 10;
+        else
+            PlayerId = 1;
     }
     IEnumerator NormalChat(string narrator, string narration)
     {
-        CharacterName.text = narrator;
+        characterName.text = narrator;
         writerText = "";
 
         for (int a = 0; a < narration.Length; a++)
         {
             writerText += narration[a];
-            ChatText.text = writerText;
+            chatText.text = writerText;
             yield return new WaitForSeconds(0.01f);
         }
 
