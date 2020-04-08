@@ -6,12 +6,13 @@ public enum PlayerState                                                         
 {
     Idle,
     Move,
-    AVOID,
-    ATTACK1,
-    ATTACK2,
-    ATTACK3,
+    Avoid,
+    Attack1,
+    Attack2,
+    Attack3,
+    Skill1,
     SMASH,
-    HIT
+    Hit
 }
 
 public class FSMBase : MonoBehaviour
@@ -20,7 +21,7 @@ public class FSMBase : MonoBehaviour
     public Animator anim;
 
 
-    public PlayerState PHState;
+    public PlayerState PState;
 
     public bool isNewState;
 
@@ -32,7 +33,7 @@ public class FSMBase : MonoBehaviour
     }
     protected virtual void OnEnable()
     {
-        PHState = PlayerState.Idle;
+        PState = PlayerState.Idle;
         StartCoroutine(FSMMain());
     }
 
@@ -41,16 +42,16 @@ public class FSMBase : MonoBehaviour
         while(true)
         {
             isNewState = false;
-            yield return StartCoroutine(PHState.ToString());
+            yield return StartCoroutine(PState.ToString());
         }
 
     }
     public void SetState(PlayerState newState)
     {
         isNewState = true;
-        PHState = newState;
+        PState = newState;
 
-        anim.SetInteger("state", (int)PHState);
+        anim.SetInteger("state", (int)PState);
     }
     protected virtual IEnumerator Idle()
     {
@@ -66,8 +67,6 @@ public class FSMBase : MonoBehaviour
         do
         {
             yield return null;
-            if(Input.GetKeyUp(KeyCode.A))
-                SetState(PlayerState.Idle);
         } while (!isNewState);
 
 

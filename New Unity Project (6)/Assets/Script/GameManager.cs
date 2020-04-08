@@ -17,9 +17,9 @@ public class GameManager : MonoBehaviour
     {
         skillTable = GameObject.Find("UI").transform.Find("SkillTable").gameObject;
         blackBox = GameObject.Find("UI").transform.Find("BlackBox").gameObject;
-        pos = GameObject.Find("UI").transform.Find("Quest").GetComponent<RectTransform>();
+        //pos = GameObject.Find("UI").transform.Find("Quest").GetComponent<RectTransform>();
         useSkill = false;
-        firstPos = pos.anchoredPosition;
+       // firstPos = pos.anchoredPosition;
 
     }
 
@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
+            Debug.Log(clickTime);
             clickTime = clickTime + Time.deltaTime * 10f;
             Debug.Log(clickTime);
             if (clickTime > 10.0f)
@@ -57,20 +58,20 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Tab))
-        {
-            questTab = true;
-            pos.anchoredPosition = Vector2.MoveTowards(pos.anchoredPosition, new Vector2(-702f,200f),Time.deltaTime*600f);
-        }
+        //if (Input.GetKey(KeyCode.Tab))
+        //{
+        //    questTab = true;
+        //    pos.anchoredPosition = Vector2.MoveTowards(pos.anchoredPosition, new Vector2(-702f,200f),Time.deltaTime*600f);
+        //}
         PlayerInput();
 
-        if (Input.GetKeyUp(KeyCode.Tab))
-        {
-            questTab = false;
-        }
-        if(questTab == false)
-        {
-            pos.anchoredPosition = Vector2.MoveTowards(pos.anchoredPosition, new Vector2(-948f, 200f), Time.deltaTime * 800f);
-        }
+        //if (Input.GetKeyUp(KeyCode.Tab))
+        //{
+        //    questTab = false;
+        //}
+        //if(questTab == false)
+        //{
+        //    pos.anchoredPosition = Vector2.MoveTowards(pos.anchoredPosition, new Vector2(-948f, 200f), Time.deltaTime * 800f);
+        //}
     }
 }

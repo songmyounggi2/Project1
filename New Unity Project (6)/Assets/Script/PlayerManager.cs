@@ -134,28 +134,28 @@ public class PlayerManager : MonoBehaviour
             ResetAnimationParameters();
             //SetJump();
             SetAttack();
-            SetAvoid();
+            //SetAvoid();
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) )
             {
                 SetMove();
             }
         }
-        else
-            SetIdle();
+        //else
+        //    SetIdle();
 
         PlayerAnimationControl();
         
 
     }
     
-    bool CheckIsAttacking()
-    {
+    //bool CheckIsAttacking()
+    //{
 
-        if (this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2") || this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
-            return true;
-        else
-            return false;
-    }
+    //    if (this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack2") || this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack3"))
+    //        return true;
+    //    else
+    //        return false;
+    //}
     void CreateColider()
     {
         MeshCollider.Instantiate(this, this.transform);
@@ -167,8 +167,8 @@ public class PlayerManager : MonoBehaviour
     }
     void SetMove() // 무브액션
     {
-        if (CheckIsAttacking())
-            return;
+        //if (CheckIsAttacking())
+        //    return;
         //_playerAnimator.ResetTrigger("IDLE");
         float transtime = 0.5f;
 
@@ -288,30 +288,30 @@ public class PlayerManager : MonoBehaviour
         }
 
     }
-    void SetAvoid()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {    
-            StartCoroutine("AvoidTimer");
-        }
-    }
-    void AvoidPosition()
-    {
-        if (!isAvoid)
-            return;
-        if (transform.position == AvoidEndtPos)
-        {
-            isAvoid = false;
-           // gameObject.GetComponent<lockOn>().enabled = true;
-            playerAnimator.SetInteger("AVOID_TYPE",2);
-            charstate = CharState.MOVE;
+    //void SetAvoid()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {    
+    //        StartCoroutine("AvoidTimer");
+    //    }
+    //}
+    //void AvoidPosition()
+    //{
+    //    if (!isAvoid)
+    //        return;
+    //    if (transform.position == AvoidEndtPos)
+    //    {
+    //        isAvoid = false;
+    //       // gameObject.GetComponent<lockOn>().enabled = true;
+    //        playerAnimator.SetInteger("AVOID_TYPE",2);
+    //        charstate = CharState.MOVE;
 
             
-        }
+    //    }
 
-        transform.position = Vector3.MoveTowards(transform.position, AvoidEndtPos, 15 * Time.deltaTime);
+    //    transform.position = Vector3.MoveTowards(transform.position, AvoidEndtPos, 15 * Time.deltaTime);
        
-    }
+    //}
    
 
     //void SetJump()
@@ -336,7 +336,7 @@ public class PlayerManager : MonoBehaviour
             if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
             {
                 charstate = CharState.ATTACK2;
-                GameObject.Find("GameManager").GetComponent<GameManager>().useSkill = true;
+                //GameObject.Find("GameManager").GetComponent<GameManager>().useSkill = true;
                 Debug.Log("가가"); 
             }
 
@@ -359,14 +359,14 @@ public class PlayerManager : MonoBehaviour
     {
         GameObject.Find("Dragonblade(Clone)").GetComponent<SwordManager>().CreateSwordCollider();
     }
-    void SetIdle()
-    {
-        if (CheckIsAttacking())
-            return;
+    //void SetIdle()
+    //{
+    //    //if (CheckIsAttacking())
+    //    //    return;
 
-        ResetAnimationParameters();
-        charstate = CharState.IDLE;
-    }
+    //    ResetAnimationParameters();
+    //    charstate = CharState.IDLE;
+    //}
 
     void ResetAnimationParameters()
     {
@@ -384,6 +384,6 @@ public class PlayerManager : MonoBehaviour
     {
        
         CharacterInput();
-        AvoidPosition();
+        //AvoidPosition();
     }
 }

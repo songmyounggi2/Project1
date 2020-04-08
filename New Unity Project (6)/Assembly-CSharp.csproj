@@ -144,7 +144,6 @@
     <Compile Include="Assets\Script\DialogManager.cs" />
     <Compile Include="Assets\Script\DialogText.cs" />
     <Compile Include="Assets\Script\FadeIn.cs" />
-    <Compile Include="Assets\Script\Fadeout.cs" />
     <Compile Include="Assets\Script\FSMBase.cs" />
     <Compile Include="Assets\Script\FSMPlayer.cs" />
     <Compile Include="Assets\Script\GameManager.cs" />
@@ -153,10 +152,10 @@
     <Compile Include="Assets\Script\MonsterHit.cs" />
     <Compile Include="Assets\Script\MonsterManager.cs" />
     <Compile Include="Assets\Script\MouseUp.cs" />
-    <Compile Include="Assets\Script\PlayerControl.cs" />
     <Compile Include="Assets\Script\PlayerManager.cs" />
     <Compile Include="Assets\Script\Playermove.cs" />
     <Compile Include="Assets\Script\ScenesManager.cs" />
+    <Compile Include="Assets\Script\SkillCustomize.cs" />
     <Compile Include="Assets\Script\SlotClick.cs" />
     <Compile Include="Assets\Script\Story.cs" />
     <Compile Include="Assets\Script\SwordManager.cs" />
@@ -172,6 +171,7 @@
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\HistogramRender.shader" />
     <None Include="Assets\Prefabs\KriptoFX\MeshEffect\Shaders\ME_LightningParticles.shader" />
     <None Include="Assets\PostProcessing\Editor Resources\UI\CurveBackground.shader" />
+    <None Include="Assets\Map\ErbGameArt\HQ Portals\Shaders\Blend_CenterGlow.shader" />
     <None Include="Assets\Prefabs\KriptoFX\MeshEffect\Shaders\ME_DistortionSlime.shader" />
     <None Include="Assets\Prefabs\KriptoFX\MeshEffect\Shaders\ME_DistortionPasses.cginc" />
     <None Include="Assets\PostProcessing\Resources\Shaders\ScreenSpaceReflection.shader" />
@@ -186,6 +186,7 @@
     <None Include="Assets\PostProcessing\Resources\Shaders\Uber.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\Blit.shader" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\WaveformRender.shader" />
+    <None Include="Assets\Map\ErbGameArt\HQ Portals\Shaders\Add_CenterGlow.shader" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\VectorscopeCompute.compute" />
     <None Include="Assets\Prefabs\KriptoFX\MeshEffect\ImagePostEffects\Mobile\Resources\ME_Bloom.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\FXAA3.cginc" />
@@ -223,25 +224,25 @@
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\WaveformCompute.compute" />
     <None Include="Assets\Prefabs\KriptoFX\MeshEffect\Shaders\ME_GlowCutoutGradient.shader" />
     <Reference Include="Cinemachine">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
+      <HintPath>C:/Users/sokmu/Desktop/Project1-master/New Unity Project (6)/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/sokmu/Desktop/Project1-master/New Unity Project (6)/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>C:/Users/sokmu/Desktop/Project1-master/New Unity Project (6)/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>C:/Users/sokmu/Desktop/Project1-master/New Unity Project (6)/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.cinemachine.editor">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
+      <HintPath>C:/Users/sokmu/Desktop/Project1-master/New Unity Project (6)/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/sokmu/Desktop/Project1-master/New Unity Project (6)/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>C:/Users/sokmu/Desktop/Project1-master/New Unity Project (6)/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>D:/2018.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -445,16 +446,16 @@
       <HintPath>D:/2018.3.14f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="LitJson">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Assets/Plugins/LitJson.dll</HintPath>
+      <HintPath>C:/Users/sokmu/Desktop/Project1-master/New Unity Project (6)/Assets/Plugins/LitJson.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
+      <HintPath>C:/Users/sokmu/Desktop/Project1-master/New Unity Project (6)/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/sokmu/Desktop/Project1-master/New Unity Project (6)/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>C:/Users/sokmu/MyProject/Project1/New Unity Project (6)/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>C:/Users/sokmu/Desktop/Project1-master/New Unity Project (6)/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>D:/2018.3.14f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
