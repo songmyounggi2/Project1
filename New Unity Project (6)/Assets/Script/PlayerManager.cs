@@ -14,7 +14,8 @@ public enum CharState                                                          /
     ATTACK2,
     ATTACK3,
     SMASH,
-    HIT
+    HIT,
+    Test
 }
 
 public struct CharStats                                                          //스텟

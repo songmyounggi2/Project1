@@ -67,6 +67,14 @@ public class FSMPlayer : FSMBase
         } while (!isNewState);
     }
 
+    protected virtual IEnumerator Test()
+    {
+        do
+        {
+            yield return null;
+        } while (!isNewState);
+    }
+
 
     protected virtual IEnumerator Attack1()
     {
@@ -296,6 +304,25 @@ public class FSMPlayer : FSMBase
         {
             Debug.Log(PState.ToString());
             SetState(PlayerState.Hit);
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Debug.Log(PState.ToString());
+            SetState(PlayerState.Test);
+            
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+            {
+                anim.SetFloat("ATTACK_TYPE", 2.0f);
+            }
+
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
+            {
+                anim.SetFloat("ATTACK_TYPE", 3.0f);
+            }
+            else
+            {
+                anim.SetFloat("ATTACK_TYPE", 1.0f);
+            }
         }
         SetAttack();
         

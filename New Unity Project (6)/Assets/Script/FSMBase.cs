@@ -12,7 +12,8 @@ public enum PlayerState                                                         
     Attack3,
     Skill1,
     SMASH,
-    Hit
+    Hit,
+    Test
 }
 
 public class FSMBase : MonoBehaviour
@@ -71,6 +72,9 @@ public class FSMBase : MonoBehaviour
 
 
     }
+   
+    
+    
     // Start is called before the first frame update
     void Start()
     {
