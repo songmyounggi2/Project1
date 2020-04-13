@@ -8,7 +8,7 @@ public class SwordManager : MonoBehaviour
     //MonsterManager monsterManager = GameObject.FindGameObjectWithTag("Monster").GetComponent<MonsterManager>();
 
     MansState mansState;
-    CharState charState;
+    //CharState charState;
     BoxCollider swordCollider;
     // Start is called before the first frame update
     void Start()

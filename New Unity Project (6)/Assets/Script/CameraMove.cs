@@ -66,7 +66,7 @@ public class CameraMove : MonoBehaviour
         else
         {
             CameraRotate();
-            Debug.Log("변환");
+            //Debug.Log("변환");
         }
 
     }

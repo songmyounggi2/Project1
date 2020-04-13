@@ -20,6 +20,9 @@ public class FSMPlayer : FSMBase
     float clickTime = 0f;
     public bool useSkill = false;
     public string skillName;
+    bool IsAvoidable = true;
+    public float avoidCooltime = 5.0f;
+    float transtime = 0.5f;
 
     protected override IEnumerator Idle()
     {
@@ -42,7 +45,8 @@ public class FSMPlayer : FSMBase
     {
         do
         {
-            transform.position = Vector3.MoveTowards(transform.position, avoidEndtPos, 15 * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, avoidEndtPos, 32 * Time.deltaTime);
+            //gameObject.GetComponent<lockOn>().enabled = true;
             yield return null;
             if (this.transform.position == avoidEndtPos)
             {
@@ -52,6 +56,17 @@ public class FSMPlayer : FSMBase
 
         } while (!isNewState);
     }
+    IEnumerator AvoidTimer()
+    {
+        if (IsAvoidable == true)
+        {
+            IsAvoidable = false;
+
+            yield return new WaitForSeconds(avoidCooltime);
+            IsAvoidable = true;
+        }
+    }
+
     protected virtual IEnumerator Run()
     {
         do
@@ -133,12 +148,11 @@ public class FSMPlayer : FSMBase
             yield return null;
         } while (!isNewState);
     }
-    private void SetAttack()
+    private void AttackKeyDown()
     {
         if (Input.GetMouseButtonDown(0))
         {
             
-
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
             {
                 SetState(PlayerState.Attack2);
@@ -198,7 +212,7 @@ public class FSMPlayer : FSMBase
     {
 
         SetState(PlayerState.Idle);
-        Debug.Log("dd");
+       // Debug.Log("dd");
     }
     public void SetSKill()
     {
@@ -209,18 +223,40 @@ public class FSMPlayer : FSMBase
         else if (skillName == "Skill3")
             SetState(PlayerState.Skill1);
     }
+    private void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.tag == "Left")
+        {
+
+            SetState(PlayerState.Hit);
+
+        }
+        else if (col.gameObject.tag == "Right")
+        {
+
+            SetState(PlayerState.Hit);
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
         skillTable = GameObject.Find("UI").transform.Find("SkillTable").gameObject;
         blackBox = GameObject.Find("UI").transform.Find("BlackBox").gameObject;
+        
     }
-
-    // Update is called once per frame
-    void Update()
+    void PlayerInput()
     {
-        float transtime = 0.5f;
-
+        MoveKeyDown();
+        AvoidKeyDown();
+        AttackKeyDown();
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            Debug.Log(PState.ToString());
+            SetState(PlayerState.Hit);
+        }
+    }
+    void MoveKeyDown()
+    {
         if (Input.GetKey(KeyCode.A))
         {
             SetState(PlayerState.Move);
@@ -294,37 +330,24 @@ public class FSMPlayer : FSMBase
             anim.SetFloat("MOVE_DIRECTION_Y", 1f, transtime, Time.deltaTime);
 
         }
+    }
+    void AvoidKeyDown()
+    {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            if (!IsAvoidable)
+                return;
             SetState(PlayerState.Avoid);
+            StartCoroutine(AvoidTimer());
             anim.SetInteger("AVOID_TYPE", 2);
             avoidEndtPos = this.transform.position + this.transform.localRotation * avoidDirection * 8;
         }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            Debug.Log(PState.ToString());
-            SetState(PlayerState.Hit);
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Debug.Log(PState.ToString());
-            SetState(PlayerState.Test);
-            
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
-            {
-                anim.SetFloat("ATTACK_TYPE", 2.0f);
-            }
 
-            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
-            {
-                anim.SetFloat("ATTACK_TYPE", 3.0f);
-            }
-            else
-            {
-                anim.SetFloat("ATTACK_TYPE", 1.0f);
-            }
-        }
-        SetAttack();
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        PlayerInput();
         
     }
 }

@@ -35,9 +35,9 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            Debug.Log(clickTime);
+            //Debug.Log(clickTime);
             clickTime = clickTime + Time.deltaTime * 10f;
-            Debug.Log(clickTime);
+           // Debug.Log(clickTime);
             if (clickTime > 10.0f)
             {
                 Time.timeScale = 0.01F;
