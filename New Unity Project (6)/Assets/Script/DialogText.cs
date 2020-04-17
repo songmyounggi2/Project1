@@ -89,38 +89,39 @@ public class DialogText : MonoBehaviour
     }
     public void SaveName(string playerName)
     {
-        numCheck();
-        DataManager.instance.playerList.Add(new Player(playerName, 50 , 3 , 1 , PlayerId));
+        //numCheck();
+        GameManager.instance.playerData = new Player(playerName, 50 , 3 , 1 , PlayerId);
+        
         Debug.Log(PlayerId);
        //player.Name = playerName;
 
-       JsonData PlayerStateJson = JsonMapper.ToJson(DataManager.instance.playerList);
+       JsonData PlayerStateJson = JsonMapper.ToJson(GameManager.instance.playerData);
 
         File.WriteAllText(Application.dataPath + "/Resource/Player.json", PlayerStateJson.ToString());
 
-        Debug.Log(DataManager.instance.playerList[0].name);
+        
 
     }
-    int IDCheck()
-    {
-        int idNum = 0;
+    //int IDCheck()
+    //{
+    //    int idNum = 0;
 
-        for (int i = 0; i < DataManager.instance.playerList.Count; i++)
-        {
-            idNum +=DataManager.instance.playerList[i].id;
-            Debug.Log(i + "번째 아이디 " + DataManager.instance.playerList[i].id);
-        }
-        return idNum;
-    }
-    void numCheck()
-    {
-        if (IDCheck() == 11)
-            PlayerId = 100;
-        else if(IDCheck() == 1 || IDCheck() == 101)
-            PlayerId = 10;
-        else
-            PlayerId = 1;
-    }
+    //    for (int i = 0; i < DataManager.instance.playerList.Count; i++)
+    //    {
+    //        idNum +=DataManager.instance.playerList[i].id;
+    //        Debug.Log(i + "번째 아이디 " + DataManager.instance.playerList[i].id);
+    //    }
+    //    return idNum;
+    //}
+    //void numCheck()
+    //{
+    //    if (IDCheck() == 11)
+    //        PlayerId = 100;
+    //    else if(IDCheck() == 1 || IDCheck() == 101)
+    //        PlayerId = 10;
+    //    else
+    //        PlayerId = 1;
+    //}
     IEnumerator NormalChat(string narrator, string narration)
     {
         characterName.text = narrator;

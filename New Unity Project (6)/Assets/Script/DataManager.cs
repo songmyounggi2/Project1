@@ -26,22 +26,20 @@ public class Player
 }
 public class DataManager : MonoBehaviour
 {
-    public static DataManager instance;
-
     JsonData userData;                                              // 제이슨 파일에 저장된 유저의 데이터를 불러오는 용도
     JsonData tempData;                                              // 유저의 데이터를 임시 저장하는 용도
-    public List<Player> playerList = new List<Player>();            // 불러온 데이터를  리스트화
+    public List<Player> playerList = new List<Player>();            // 불러온 데이터를 리스트화
     public List<Text> slotText = new List<Text>();                  // 슬롯에 저장된 데이터를 관리하기위한 리스트
     public Text []playerDataText = new Text[3];                     // 슬롯에 저장된 데이터를 시각화해주는 메세지
     public Text choseDataText;                                      // 유저가 선택한 슬롯의 정보를 보여주는 메세지
     public int slotNum;                                             // 유저가 선택한 슬롯의 번호
+    int selectSlot = 0;
 
-    public Player playerData;
     
     void Awake()
     {
-        instance = this;
-       
+        //instance = this;
+        //DontDestroyOnLoad(gameObject);
     }
 
     IEnumerator LoaCo()
@@ -60,15 +58,16 @@ public class DataManager : MonoBehaviour
     {
         for (int i = 0; i < DataNum; i++)
         {
-            string TempName = UserData[i]["Name"].ToString();
-            string TempHP = UserData[i]["HP"].ToString();
-            string TempPower = UserData[i]["Power"].ToString();
-            string TempMoveSpeed = UserData[i]["MoveSpeed"].ToString();
-            string TempID = UserData[i]["ID"].ToString();
+            string TempName = UserData[i]["name"].ToString();
+            string TempHP = UserData[i]["hp"].ToString();
+            string TempPower = UserData[i]["power"].ToString();
+            string TempMoveSpeed = UserData[i]["moveSpeed"].ToString();
+            string TempID = UserData[i]["id"].ToString();
             playerList.Add(new Player(TempName, int.Parse(TempHP), int.Parse(TempPower), int.Parse(TempMoveSpeed), int.Parse(TempID)));
             playerDataText[i].text = "Name : " + playerList[i].name + "\n" + "Code : " + playerList[i].id;
             slotText.Add(playerDataText[i]);
-            
+            Debug.Log(slotText.Count);
+
         }
     }
     public void CreateCharacter()
@@ -99,8 +98,6 @@ public class DataManager : MonoBehaviour
         }
         else
         {
-            LoadData();
-            Debug.Log(userData.Count);
             if (userData.Count > 0)
                 LoadDataMessage();
             else
@@ -108,17 +105,14 @@ public class DataManager : MonoBehaviour
         }
         //SceneManager.LoadScene("CharacterSelect");
     }
-    public void LoadData()
-    {
-        string Jsonstring = File.ReadAllText(Application.dataPath + "/Resource/Player.json");
-        userData = JsonMapper.ToObject(Jsonstring);
-        //ParsingJsonPlayerStats(itemData);
-    }
+    //public void LoadData()
+    //{
+    //    string Jsonstring = File.ReadAllText(Application.dataPath + "/Resource/Player.json");
+    //    userData = JsonMapper.ToObject(Jsonstring);
+    //    //ParsingJsonPlayerStats(itemData);
+    //}
     public void ClickSlot()
     {
-
-        Debug.Log(slotNum);
-        Debug.Log(slotText.Count);
         if (slotText.Count < slotNum+1)
         {
             OpenWarningMessage();
@@ -126,6 +120,7 @@ public class DataManager : MonoBehaviour
         }
         GameObject.Find("WarningMessege").transform.Find("ThisData").gameObject.SetActive(true);
         choseDataText.text = "You chose " + playerList[slotNum].name + "\n"+"What are you going to do?";
+        selectSlot = slotNum;
 
     }
     public void OpenWarningMessageDelete()
@@ -134,8 +129,6 @@ public class DataManager : MonoBehaviour
     }
     public void LoadDataMessage()
     {
-        playerData = playerList[slotNum];
-        Debug.Log("로드 데이터" + playerData);
         GameObject.Find("UI").transform.Find("LoadGame").gameObject.SetActive(true);
     }
     public void CloseLoadData()
@@ -152,9 +145,35 @@ public class DataManager : MonoBehaviour
     }
     public void StartLoadGame()
     {
+        GameManager.instance.playerData = playerList[selectSlot];
+        Debug.Log(GameManager.instance.playerData.name);
         SceneManager.LoadScene("Story");
     }
-    public void DeleteData()
+    //public void MouseOverFirstSlot()
+    //{
+    //    slotNum = 0;
+    //    this.gameObject.transform.Find("Click").gameObject.SetActive(true);
+
+    //}
+    //public void MouseOverSecondSlot()
+    //{
+    //    slotNum = 1;
+    //    this.gameObject.transform.Find("Click").gameObject.SetActive(true);
+
+    //}
+    //public void MouseOverThirdSlot()
+    //{
+    //    slotNum = 2;
+    //    this.gameObject.transform.Find("Click").gameObject.SetActive(true);
+
+    //}
+    //public void UnMouseOver()
+    //{
+    //    this.gameObject.transform.Find("Click").gameObject.SetActive(false);
+
+    //}
+
+public void DeleteData()
     {
         playerList.RemoveAt(slotNum);
         slotText.RemoveAt(slotNum);
@@ -200,6 +219,8 @@ public class DataManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
+            if (SceneManager.GetActiveScene().name != "MainScene")
+                return;
             CloseWarningMessage();
         }
     }

@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
     string playerName;
     
     private float moveSpeed = 10.0f;
-    public Animator playerAnimator;
+    //public Animator playerAnimator;
   
 
   
@@ -47,7 +47,7 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerAnimator = GetComponent<Animator>();
+        //playerAnimator = GetComponent<Animator>();
 
         
          //AttackType = 0;
@@ -58,18 +58,19 @@ public class PlayerManager : MonoBehaviour
     }
     void LoadPlayerStats()
     {
-        string Jsonstring = File.ReadAllText(Application.dataPath + "/Resource/Player.json");
-        JsonData itemData = JsonMapper.ToObject(Jsonstring);
-        ParsingJsonPlayerStats(itemData);
+        //string Jsonstring = File.ReadAllText(Application.dataPath + "/Resource/Player.json");
+        //JsonData itemData = JsonMapper.ToObject(Jsonstring);
+        //ParsingJsonPlayerStats(itemData);
+        Debug.Log(playerName);
     }
     void ParsingJsonPlayerStats(JsonData stats)
     {
-        for (int i = 0; i < stats.Count; i++)
-        {
+        //for (int i = 0; i < stats.Count; i++)
+        //{
 
-            playerName = DataManager.instance.playerData.name;
+        //    playerName = DataManager.instance.playerData.name;
             
-        }
+        //}
 
 
     }

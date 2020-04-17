@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+
     RectTransform pos;
     public GameObject skillTable;
     GameObject blackBox;
@@ -12,6 +14,12 @@ public class GameManager : MonoBehaviour
     bool questTab = false;
     public bool useSkill = false;
 
+    public Player playerData;
+
+    void Awake()
+    {
+        instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {

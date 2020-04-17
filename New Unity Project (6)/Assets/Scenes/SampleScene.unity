@@ -11151,6 +11151,18 @@ MonoBehaviour:
   useSkill: 0
   skillName: 
   avoidCooltime: 5
+--- !u!114 &148546728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148546726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6a6c1eaefea892468a9834f884c4a7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &148546733
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -116164,6 +116176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1441254463}
   - component: {fileID: 1441254464}
+  - component: {fileID: 1441254465}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -116199,6 +116212,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillTable: {fileID: 0}
   useSkill: 0
+--- !u!114 &1441254465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441254462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 486e1311eaaa79941bc072c9a13e6f47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotText: []
+  playerDataText:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  choseDataText: {fileID: 0}
+  slotNum: 0
 --- !u!1 &1447671851
 GameObject:
   m_ObjectHideFlags: 0
