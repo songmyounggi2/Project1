@@ -11163,6 +11163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6a6c1eaefea892468a9834f884c4a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerName: {fileID: 803289251}
 --- !u!65 &148546733
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -66281,7 +66282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &639160587
 RectTransform:
   m_ObjectHideFlags: 0
@@ -116183,7 +116184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1441254463
 Transform:
   m_ObjectHideFlags: 0
@@ -116219,7 +116220,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1441254462}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 486e1311eaaa79941bc072c9a13e6f47, type: 3}
   m_Name: 

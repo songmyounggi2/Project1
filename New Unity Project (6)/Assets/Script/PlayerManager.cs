@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using LitJson;
-
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 //public enum CharState                                                          //상태
 //{
@@ -31,8 +32,8 @@ using LitJson;
 
 public class PlayerManager : MonoBehaviour
 {
-    string playerName;
-    
+    //string playerName;
+    public Text playerName;
     private float moveSpeed = 10.0f;
     //public Animator playerAnimator;
   
@@ -41,9 +42,16 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        
+        DataLaod();
     }
 
+    void DataLaod()
+    {
+        if (SceneManager.GetActiveScene().name != "SampleScene")
+            return;
+
+        playerName.text = GameManager.instance.playerData.name;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -51,7 +59,7 @@ public class PlayerManager : MonoBehaviour
 
         
          //AttackType = 0;
-         LoadPlayerStats();
+         //LoadPlayerStats();
         //charStats.Name = File.ReadAllText(Application.dataPath + "/Resource/Player.json");
         
 
@@ -61,7 +69,7 @@ public class PlayerManager : MonoBehaviour
         //string Jsonstring = File.ReadAllText(Application.dataPath + "/Resource/Player.json");
         //JsonData itemData = JsonMapper.ToObject(Jsonstring);
         //ParsingJsonPlayerStats(itemData);
-        Debug.Log(playerName);
+       // Debug.Log(playerName);
     }
     void ParsingJsonPlayerStats(JsonData stats)
     {

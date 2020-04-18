@@ -91,11 +91,12 @@ public class DialogText : MonoBehaviour
     {
         //numCheck();
         GameManager.instance.playerData = new Player(playerName, 50 , 3 , 1 , PlayerId);
-        
+        DataManager.instance.playerList.Add(new Player(playerName, 50, 3, 1, PlayerId));
+
         Debug.Log(PlayerId);
        //player.Name = playerName;
 
-       JsonData PlayerStateJson = JsonMapper.ToJson(GameManager.instance.playerData);
+       JsonData PlayerStateJson = JsonMapper.ToJson(DataManager.instance.playerList);
 
         File.WriteAllText(Application.dataPath + "/Resource/Player.json", PlayerStateJson.ToString());
 

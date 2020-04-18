@@ -26,6 +26,8 @@ public class Player
 }
 public class DataManager : MonoBehaviour
 {
+    public static DataManager instance;
+
     JsonData userData;                                              // 제이슨 파일에 저장된 유저의 데이터를 불러오는 용도
     JsonData tempData;                                              // 유저의 데이터를 임시 저장하는 용도
     public List<Player> playerList = new List<Player>();            // 불러온 데이터를 리스트화
@@ -34,12 +36,13 @@ public class DataManager : MonoBehaviour
     public Text choseDataText;                                      // 유저가 선택한 슬롯의 정보를 보여주는 메세지
     public int slotNum;                                             // 유저가 선택한 슬롯의 번호
     int selectSlot = 0;
+    
 
     
     void Awake()
     {
-        //instance = this;
-        //DontDestroyOnLoad(gameObject);
+        instance = this;
+        
     }
 
     IEnumerator LoaCo()
@@ -146,8 +149,9 @@ public class DataManager : MonoBehaviour
     public void StartLoadGame()
     {
         GameManager.instance.playerData = playerList[selectSlot];
-        Debug.Log(GameManager.instance.playerData.name);
-        SceneManager.LoadScene("Story");
+        //Debug.Log(GameManager.instance.playerData.name);
+
+        SceneManager.LoadScene("SampleScene");
     }
     //public void MouseOverFirstSlot()
     //{
