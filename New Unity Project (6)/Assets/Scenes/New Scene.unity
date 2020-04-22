@@ -230,15 +230,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 0}
   anim: {fileID: 242256314}
-  PHState: 0
+  PState: 0
   isNewState: 0
   currentHP: 100
   maxHP: 100
-  exp: 0
-  level: 1
-  gold: 0
-  attack: 40
-  attackRange: 1.5
   moveSpeed: 3
   avoidEndtPos: {x: 0, y: 0, z: 0}
   skillEndtPos: {x: 0, y: 0, z: 0}
@@ -246,6 +241,7 @@ MonoBehaviour:
   skillTable: {fileID: 1108299194}
   useSkill: 0
   skillName: 
+  avoidCooltime: 5
 --- !u!95 &242256314 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6555362549770601798, guid: a655d1a729bbcab44bfc4981a2b8e152,
@@ -2495,7 +2491,7 @@ PrefabInstance:
       objectReference: {fileID: 4300002, guid: 576445c03c35e45488f3470a8ba58a8e, type: 3}
     - target: {fileID: 2026439832, guid: a655d1a729bbcab44bfc4981a2b8e152, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a655d1a729bbcab44bfc4981a2b8e152, type: 3}

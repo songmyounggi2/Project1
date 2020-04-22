@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public bool useSkill = false;
    // public Text playerName;
 
-    public Player playerData = null;
+    //public Player playerData = null;
 
     void Awake()
     {

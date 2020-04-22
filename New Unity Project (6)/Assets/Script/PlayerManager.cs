@@ -32,13 +32,15 @@ using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
+    public Slider HealthBar;
     //string playerName;
     public Text playerName;
-    private float moveSpeed = 10.0f;
+    public int  playerHP;
+    //private float moveSpeed = 10.0f;
     //public Animator playerAnimator;
-  
 
-  
+
+
 
     private void Awake()
     {
@@ -50,18 +52,20 @@ public class PlayerManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "SampleScene")
             return;
 
-        playerName.text = GameManager.instance.playerData.name;
+        playerName.text = DataManager.instance.playerData.name;
+        playerHP = 1000;
     }
     // Start is called before the first frame update
     void Start()
     {
         //playerAnimator = GetComponent<Animator>();
 
-        
+        HealthBar.maxValue = playerHP;
+        HealthBar.value = playerHP;
          //AttackType = 0;
          //LoadPlayerStats();
-        //charStats.Name = File.ReadAllText(Application.dataPath + "/Resource/Player.json");
-        
+         //charStats.Name = File.ReadAllText(Application.dataPath + "/Resource/Player.json");
+
 
     }
     void LoadPlayerStats()
@@ -101,7 +105,7 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
- 
+        HealthBar.value -= 1f;
+        //Debug.Log(HealthBar.value);
     }
 }

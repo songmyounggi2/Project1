@@ -13,14 +13,16 @@ public class Player
     public int power;
     public int moveSpeed;
     public int id;
+    public bool completeTutorial;
 
-    public Player(string name, int hp, int power, int movespeed , int id)
+    public Player(string name, int hp, int power, int movespeed , int id, bool completeTutorial)
     {
         this.name = name;
         this.hp = hp;
         this.power = power;
         this.moveSpeed = movespeed;
         this.id = id;
+        this.completeTutorial = completeTutorial;
 
     }
 }
@@ -36,12 +38,14 @@ public class DataManager : MonoBehaviour
     public Text choseDataText;                                      // 유저가 선택한 슬롯의 정보를 보여주는 메세지
     public int slotNum;                                             // 유저가 선택한 슬롯의 번호
     int selectSlot = 0;
-    
+
+    public Player playerData; 
 
     
     void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(gameObject);
         
     }
 
@@ -66,7 +70,8 @@ public class DataManager : MonoBehaviour
             string TempPower = UserData[i]["power"].ToString();
             string TempMoveSpeed = UserData[i]["moveSpeed"].ToString();
             string TempID = UserData[i]["id"].ToString();
-            playerList.Add(new Player(TempName, int.Parse(TempHP), int.Parse(TempPower), int.Parse(TempMoveSpeed), int.Parse(TempID)));
+            string TempCompleteTutorial = UserData[i]["completeTutorial"].ToString();
+            playerList.Add(new Player(TempName, int.Parse(TempHP), int.Parse(TempPower), int.Parse(TempMoveSpeed), int.Parse(TempID), bool.Parse(TempCompleteTutorial)));
             playerDataText[i].text = "Name : " + playerList[i].name + "\n" + "Code : " + playerList[i].id;
             slotText.Add(playerDataText[i]);
             Debug.Log(slotText.Count);
@@ -81,6 +86,10 @@ public class DataManager : MonoBehaviour
             return;
         }
         Debug.Log("성공");
+
+        playerData = new Player(null, 50, 3, 1, 0, false);
+       // playerData.completeTutorial = false;
+
         SceneManager.LoadScene("Story");
     }
 
@@ -124,7 +133,8 @@ public class DataManager : MonoBehaviour
         GameObject.Find("WarningMessege").transform.Find("ThisData").gameObject.SetActive(true);
         choseDataText.text = "You chose " + playerList[slotNum].name + "\n"+"What are you going to do?";
         selectSlot = slotNum;
-
+        playerData = playerList[selectSlot];
+        Debug.Log(playerData.completeTutorial);
     }
     public void OpenWarningMessageDelete()
     {
@@ -148,10 +158,10 @@ public class DataManager : MonoBehaviour
     }
     public void StartLoadGame()
     {
-        GameManager.instance.playerData = playerList[selectSlot];
+        //DataManager.instance.playerData = playerList[selectSlot];
         //Debug.Log(GameManager.instance.playerData.name);
-
-        SceneManager.LoadScene("SampleScene");
+        //playerData.completeTutorial = true;
+        SceneManager.LoadScene("Pub");
     }
     //public void MouseOverFirstSlot()
     //{

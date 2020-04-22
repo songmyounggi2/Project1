@@ -14,6 +14,7 @@ public class DialogManager : MonoBehaviour
     float distance = 0.0f;
     bool spaceAble = false;
     bool IsConversation = false;
+    
 
     // Start is called before the first frame update
     void Start()

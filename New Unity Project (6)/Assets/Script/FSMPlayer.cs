@@ -6,11 +6,11 @@ public class FSMPlayer : FSMBase
 {
     public int currentHP = 100;
     public int maxHP = 100;
-    public int exp = 0;
-    public int level = 1;
-    public int gold = 0;
-    public float attack = 40.0f;
-    public float attackRange = 1.5f;
+//    public int exp = 0;
+//    public int level = 1;
+//    public int gold = 0;
+ //   public float attack = 40.0f;
+//    public float attackRange = 1.5f;
     public float moveSpeed = 3.0f;
     public Vector3 avoidEndtPos;
     public Vector3 skillEndtPos;
@@ -335,11 +335,13 @@ public class FSMPlayer : FSMBase
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+           
             if (!IsAvoidable)
                 return;
             SetState(PlayerState.Avoid);
             StartCoroutine(AvoidTimer());
-            anim.SetInteger("AVOID_TYPE", 2);
+            anim.SetInteger("AVOID_TYPE",2);
+            Debug.Log("회피");
             avoidEndtPos = this.transform.position + this.transform.localRotation * avoidDirection * 8;
         }
 
