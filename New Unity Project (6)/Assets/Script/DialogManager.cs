@@ -14,7 +14,10 @@ public class DialogManager : MonoBehaviour
     float distance = 0.0f;
     bool spaceAble = false;
     bool IsConversation = false;
-    
+    bool tutorial = false;
+
+    DataManager dataManager;
+    public GameObject map;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +27,8 @@ public class DialogManager : MonoBehaviour
         InteractionMessage = GameObject.Find("UI").transform.Find("InteractionMessage").gameObject;
         Dialog = GameObject.Find("UI").transform.Find("Dialog").gameObject;
         sideCamera = GameObject.Find("CM vcam2").gameObject;
+        dataManager = DataManager.instance;
+        map = GameObject.Find("UI").transform.Find("Map").gameObject;
     }
     void CheckDistanceFromNPC()
     {
@@ -48,10 +53,31 @@ public class DialogManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            IsConversation = true;
-            InteractionMessage.SetActive(false);
-            sideCamera.GetComponent<Cinemachine.CinemachineVirtualCamera>().Priority = 1;
-            Dialog.SetActive(true);
+            tutorial = dataManager.playerData.completeTutorial;
+
+            if (tutorial)
+            {
+                IsConversation = true;
+                InteractionMessage.SetActive(false);
+                sideCamera.GetComponent<Cinemachine.CinemachineVirtualCamera>().Priority = 1;
+                Dialog.SetActive(true);
+            }
+            if (!tutorial)
+            {
+                if (map.activeSelf == true)
+                {
+                    map.SetActive(false);
+
+                }
+                else
+                {
+                    map.SetActive(true);
+                }
+                IsConversation = true;
+                //InteractionMessage.SetActive(false);
+                sideCamera.GetComponent<Cinemachine.CinemachineVirtualCamera>().Priority = 1;
+                //Dialog.SetActive(true);
+            }
         }
     }
 
