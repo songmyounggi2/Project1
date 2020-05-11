@@ -12,10 +12,8 @@ public class SkillCustomize : MonoBehaviour
 
     public Canvas mycanvas;
 
-
     GraphicRaycaster gr;
     PointerEventData ped;
-
 
     Color fadecolor;
     Color clickIconColor;
@@ -48,12 +46,16 @@ public class SkillCustomize : MonoBehaviour
     }
     void UpdateAcolor()
     {
-        fadecolor.a = 0.3f;
-        skillList[0].transform.Find("skillIcon").GetComponent<Image>().color = fadecolor;
-        fadecolor.a = 1f;
-        skillList[1].transform.Find("skillIcon").GetComponent<Image>().color = fadecolor;
-        fadecolor.a = 0.3f;
-        skillList[2].transform.Find("skillIcon").GetComponent<Image>().color = fadecolor;
+        for(int i = 0; i< skillList.Count; i++)
+        {
+            skillList[i].transform.Find("skillIcon").GetComponent<Image>().color = fadecolor;
+            if(i == 0)
+            {
+                fadecolor.a = 1f;
+            }
+            else
+                fadecolor.a = 0.3f;
+        }
 
     }
     //public void ClickIcon()
@@ -89,10 +91,6 @@ public class SkillCustomize : MonoBehaviour
             UpdatePos();
             UpdateAcolor();
 
-
-
-
-
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
                 Debug.Log("휠 다운");
@@ -117,14 +115,18 @@ public class SkillCustomize : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
+                
                 ped.position = Input.mousePosition;
                 List<RaycastResult> results = new List<RaycastResult>(); // 여기에 히트 된 개체 저장
                 gr.Raycast(ped, results);
                 if (results.Count != 0)
                 {
                     GameObject obj = results[0].gameObject;
-
-                    if (obj.transform.position == new Vector3(290.0f, 495.0f, 0.0f)) // 히트 된 오브젝트의 태그와 맞으면 실행
+                    //GameObject back = results[2].gameObject;
+               // Debug.Log(back);
+               // if (back.transform.tag != "cus")
+                //    return;
+                if (obj.transform.position == new Vector3(290.0f, 495.0f, 0.0f)) // 히트 된 오브젝트의 태그와 맞으면 실행
                     {
                         defaultPos = obj.transform.position;
                         temp = obj;
@@ -137,7 +139,42 @@ public class SkillCustomize : MonoBehaviour
             {
                 temp.transform.localScale = new Vector3(1f, 1f, 1f);
                 isDrag = false;
-                temp.transform.position = defaultPos;
+                ped.position = Input.mousePosition;
+
+                int layerMask = (-1) - (1 << LayerMask.NameToLayer("SkillList"));
+                layerMask = ~layerMask;
+
+                List<RaycastResult> results = new List<RaycastResult>(); // 여기에 히트 된 개체 저장
+
+                gr.Raycast(ped, results);
+
+                if (results.Count != 0)
+                {
+                GameObject customList = results[0].gameObject;
+                GameObject registeredSkill = results[1].gameObject;
+
+                Debug.Log(registeredSkill.name);
+
+                    if (registeredSkill.name == "Image")
+                    {
+                    
+                    skillList.RemoveAt(1);
+
+                    temp.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+                    GameObject pre = customList.transform.parent.gameObject;
+
+                    temp.transform.parent = registeredSkill.transform.parent;
+
+                    Destroy(pre);
+                    }
+
+                    else
+                    {
+                    temp.transform.position = defaultPos;
+                    }
+            }
+                
             }
 
         }

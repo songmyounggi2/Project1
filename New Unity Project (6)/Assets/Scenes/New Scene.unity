@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 335354741}
   - component: {fileID: 335354743}
   - component: {fileID: 335354742}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Skill3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 383030127}
   m_Layer: 5
   m_Name: SkillInformation (1)
-  m_TagString: Untagged
+  m_TagString: cus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 506673576}
   m_Layer: 5
   m_Name: SkillInformation (2)
-  m_TagString: Untagged
+  m_TagString: cus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 568641826}
   - component: {fileID: 568641825}
   - component: {fileID: 568641824}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1220,7 +1220,7 @@ GameObject:
   - component: {fileID: 1053150412}
   - component: {fileID: 1053150414}
   - component: {fileID: 1053150413}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Skill1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2506,7 +2506,7 @@ GameObject:
   - component: {fileID: 1620638521}
   - component: {fileID: 1620638520}
   - component: {fileID: 1620638519}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2643,7 +2643,7 @@ GameObject:
   - component: {fileID: 1660354349}
   m_Layer: 5
   m_Name: Customize
-  m_TagString: Untagged
+  m_TagString: cus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2815,7 +2815,7 @@ GameObject:
   - component: {fileID: 1764429672}
   m_Layer: 5
   m_Name: SkillInformation
-  m_TagString: Untagged
+  m_TagString: cus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2928,7 +2928,7 @@ GameObject:
   - component: {fileID: 1840969052}
   - component: {fileID: 1840969051}
   - component: {fileID: 1840969050}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3102,7 +3102,7 @@ GameObject:
   - component: {fileID: 2013023778}
   - component: {fileID: 2013023780}
   - component: {fileID: 2013023779}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Skill2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
