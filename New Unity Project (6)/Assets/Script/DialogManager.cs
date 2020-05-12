@@ -64,19 +64,18 @@ public class DialogManager : MonoBehaviour
             }
             if (!tutorial)
             {
+                sideCamera.GetComponent<Cinemachine.CinemachineVirtualCamera>().Priority = 1;
+
                 if (map.activeSelf == true)
                 {
                     map.SetActive(false);
-
                 }
                 else
                 {
                     map.SetActive(true);
                 }
                 IsConversation = true;
-                //InteractionMessage.SetActive(false);
-                sideCamera.GetComponent<Cinemachine.CinemachineVirtualCamera>().Priority = 1;
-                //Dialog.SetActive(true);
+                
             }
         }
     }

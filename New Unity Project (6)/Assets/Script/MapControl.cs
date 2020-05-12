@@ -54,14 +54,15 @@ public class MapControl : MonoBehaviour
             monsterMapList.Add(monsterMapSet);
             Instantiate(monsterMapList[i].monsterIcon, Vector3.zero, Quaternion.identity);
             monsterMapList[i].monsterIcon.transform.SetParent(spawner.transform, false);
-            pointerPos.Add(spawner.transform.position + new Vector3(0,20,0));
+            pointerPos.Add(spawner.transform.position + new Vector3(0, 20, 0));
         }
+        
         //GameObject pointerObj = Instantiate(Resources.Load("Prefabs/pointer")) as GameObject;
 
         //Instantiate(mapPointer, pointerPos[0], Quaternion.identity);
         //mapPointer.transform.SetParent(this.gameObject.transform);
         //mapPointer.transform.SetParent(GameObject.Find("UI").transform.Find("Map").transform);
-        
+
         Debug.Log(pointerPos[0]);
 
     }
@@ -101,7 +102,6 @@ public class MapControl : MonoBehaviour
     }
     void Update()
     {
-
         CheckDifficulty();
         if (Input.GetKeyDown(KeyCode.T))
         {

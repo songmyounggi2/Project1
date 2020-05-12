@@ -15,7 +15,7 @@ public class DialogText : MonoBehaviour
     public Image map;
     public InputField inputField;
     string writerText;
-    string PlayerName;
+    string playerName;
     public Animator PubOwner;
     public int PlayerId;
     GameObject Dialog;
@@ -26,17 +26,14 @@ public class DialogText : MonoBehaviour
     void Start()
     {
         dataManager = DataManager.instance;
-        //.Find("UI").transform.Find("Fadein").gameObject.SetActive(true);
-        PlayerName = "???";
+        playerName = "???";
         PlayerId = 0;
-        //EndFirstScript();
+ 
         Dialog = GameObject.Find("UI").transform.Find("Dialog").gameObject;
-        // dataManager = DataManager.instance;
-        //Debug.Log(dataManager.playerData.completeTutorial);
+
         if (!dataManager.playerData.completeTutorial)
         {
-            StartCoroutine(TextPractice_NoName());
-            
+            StartCoroutine(FirstMeetDialog());
         }
         else
             StartCoroutine(NewMonster());
@@ -45,33 +42,44 @@ public class DialogText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
-    IEnumerator TextPractice_NoName()
+    IEnumerator FirstMeetDialog()
     {
         DataManager.instance.playerData.completeTutorial = true;
-        yield return StartCoroutine(NormalChat(PlayerName, "Ask and go to the blue"));
+        yield return StartCoroutine(NormalChat(playerName, "Ask and go to the blue"));
         yield return new WaitForSeconds(3f);
         PubOwner.SetTrigger("DIALOG");
         yield return StartCoroutine(NormalChat("Owner", "?!!"));
         yield return new WaitForSeconds(2f);
         yield return StartCoroutine(NormalChat("Owner", "What?! \n Hey puppy!We have only beer!"));
         yield return new WaitForSeconds(3f);
-        yield return StartCoroutine(NormalChat(PlayerName, "Ask and go to the blue..."));
+        yield return StartCoroutine(NormalChat(playerName, "Ask and go to the blue..."));
         yield return new WaitForSeconds(2.3f);
         yield return StartCoroutine(NormalChat("Owner", "hahahaha!! Seriously ? \n Don’t blame me for what happened! \n so, what's your name ?"));
         yield return new WaitForSeconds(4f);
-        EndFirstScript();
-       
+        EndFirstMeetDialog();
     }
+
+    IEnumerator FirstBattleDialog()
+    {
+        yield return StartCoroutine(NormalChat(playerName, playerName + "...\n" + playerName));
+        yield return new WaitForSeconds(3f);
+        PubOwner.SetTrigger("FOLLOW");
+        yield return StartCoroutine(NormalChat("Owner", "ok... " + playerName + "\nFollow me"));
+        yield return new WaitForSeconds(3f);
+        GameObject.Find("UI").transform.Find("Fadeout").gameObject.SetActive(true);
+        yield return new WaitForSeconds(1.8f);
+        SceneManager.LoadScene("Tutorial");
+    }
+
     IEnumerator NewMonster()
     {
-        PlayerName = dataManager.playerData.name;
+        playerName = dataManager.playerData.name;
         PubOwner.SetTrigger("DIALOG");
         yield return StartCoroutine(NormalChat("Owner", "Are you still alive?"));
         yield return new WaitForSeconds(3f);
-        yield return StartCoroutine(NormalChat(PlayerName, "...Damn inspiration"));
+        yield return StartCoroutine(NormalChat(playerName, "...Damn...old man"));
         yield return new WaitForSeconds(3f);
         yield return StartCoroutine(NormalChat("Owner", "hahahaha!! \n i'm just kidding"));
         yield return new WaitForSeconds(3f);
@@ -80,58 +88,50 @@ public class DialogText : MonoBehaviour
         ShowMap();
 
     }
-    IEnumerator TextPractice()
-    {
-         yield return StartCoroutine(NormalChat(PlayerName, PlayerName+"...\n"+ PlayerName));
-        yield return new WaitForSeconds(3f);
-        PubOwner.SetTrigger("FOLLOW");
-        yield return StartCoroutine(NormalChat("Owner", "ok... "+ PlayerName + "\nFollow me"));
-        yield return new WaitForSeconds(3f);
-        GameObject.Find("UI").transform.Find("Fadeout").gameObject.SetActive(true);
-        yield return new WaitForSeconds(1.8f);
-        SceneManager.LoadScene("SampleScene");
-    }
-    void EndFirstScript()
+
+    void EndDialog()
     {
         PubOwner.SetTrigger("IDLE");
-        inputField.gameObject.SetActive(true);
         chatText.gameObject.SetActive(false);
         characterName.gameObject.SetActive(false);
-
     }
+
+    void EndFirstMeetDialog()
+    {
+        EndDialog();
+        inputField.gameObject.SetActive(true);
+    }
+
     void ShowMap()
     {
-        PubOwner.SetTrigger("IDLE");
-        chatText.gameObject.SetActive(false);
-        characterName.gameObject.SetActive(false);
+        EndDialog();
+
         map.gameObject.SetActive(true);
         Dialog.SetActive(false);
     }
+
     public void SetName()
     {
-        PlayerName = inputField.text;
-        SaveName(PlayerName);
-        // charStats.Name = PlayerName;
+        playerName = inputField.text;
+        SaveName(playerName);
+
         inputField.gameObject.SetActive(false);
         chatText.gameObject.SetActive(true);
         characterName.gameObject.SetActive(true);
         
-        StartCoroutine(TextPractice());
-
+        StartCoroutine(FirstBattleDialog());
     }
+
     public void SaveName(string playerName)
     {
-        //numCheck();
         DataManager.instance.playerData = new Player(playerName, 50 , 3 , 1 , PlayerId , true);
         DataManager.instance.playerList.Add(DataManager.instance.playerData);
-
-        Debug.Log(PlayerId);
-       //player.Name = playerName;
 
        JsonData PlayerStateJson = JsonMapper.ToJson(DataManager.instance.playerList);
 
         File.WriteAllText(Application.dataPath + "/Resource/Player.json", PlayerStateJson.ToString());
     }
+
     int IDCheck()
     {
         int idNum = 0;
