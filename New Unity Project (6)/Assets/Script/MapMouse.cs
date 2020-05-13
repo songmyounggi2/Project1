@@ -17,22 +17,15 @@ public class MapMouse : MonoBehaviour
 
     public void MapMouseHover()
     {
-
         monsterIconSclse = new Vector3(1.5f, 1.5f, 1f);
-
     }
     public void MapMouseUnHover()
     {
-
-
         monsterIconSclse = new Vector3(1.0f, 1.0f, 1f);
-
     }
     public void MapMouseClick()
     {
-
-        SceneManager.LoadScene("SampleScene");
-
+        //SceneManager.LoadScene("Tutorial");
     }
     // Update is called once per frame
     void Update()

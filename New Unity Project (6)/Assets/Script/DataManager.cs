@@ -14,6 +14,7 @@ public class Player
     public int moveSpeed;
     public int id;
     public bool completeTutorial;
+    //public int completeTutorial;
 
     public Player(string name, int hp, int power, int movespeed , int id, bool completeTutorial)
     {
@@ -39,9 +40,9 @@ public class DataManager : MonoBehaviour
     public int slotNum;                                             // 유저가 선택한 슬롯의 번호
     int selectSlot = 0;
 
-    public Player playerData; 
+    public Player playerData;
+    public MonsterMapSet monsterMapSet;
 
-    
     void Awake()
     {
         instance = this;

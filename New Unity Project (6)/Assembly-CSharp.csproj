@@ -144,6 +144,7 @@
     <Compile Include="Assets\Script\DialogManager.cs" />
     <Compile Include="Assets\Script\DialogText.cs" />
     <Compile Include="Assets\Script\FadeIn.cs" />
+    <Compile Include="Assets\Script\FieldCreate.cs" />
     <Compile Include="Assets\Script\FSMBase.cs" />
     <Compile Include="Assets\Script\FSMPlayer.cs" />
     <Compile Include="Assets\Script\GameManager.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Assets\Script\lockOn.cs" />
     <Compile Include="Assets\Script\MapControl.cs" />
     <Compile Include="Assets\Script\MapMouse.cs" />
+    <Compile Include="Assets\Script\MonsterCreater.cs" />
     <Compile Include="Assets\Script\MonsterHit.cs" />
     <Compile Include="Assets\Script\MonsterManager.cs" />
     <Compile Include="Assets\Script\MouseUp.cs" />
@@ -160,6 +162,7 @@
     <Compile Include="Assets\Script\SkillCustom.cs" />
     <Compile Include="Assets\Script\SkillCustomize.cs" />
     <Compile Include="Assets\Script\SlotClick.cs" />
+    <Compile Include="Assets\Script\StageControl.cs" />
     <Compile Include="Assets\Script\Story.cs" />
     <Compile Include="Assets\Script\SwordManager.cs" />
     <Compile Include="Assets\Script\TutoririalControl.cs" />

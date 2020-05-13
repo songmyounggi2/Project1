@@ -285,6 +285,7 @@ public class FSMPlayer : FSMBase
             anim.SetFloat("MOVE_DIRECTION_Y", -1f, transtime, Time.deltaTime);
             avoidDirection = Vector3.back;
         }
+
         if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
         {
             SetState(PlayerState.Move);

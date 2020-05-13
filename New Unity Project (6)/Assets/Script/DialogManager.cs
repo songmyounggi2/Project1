@@ -55,28 +55,25 @@ public class DialogManager : MonoBehaviour
         {
             tutorial = dataManager.playerData.completeTutorial;
 
-            if (tutorial)
-            {
                 IsConversation = true;
                 InteractionMessage.SetActive(false);
                 sideCamera.GetComponent<Cinemachine.CinemachineVirtualCamera>().Priority = 1;
                 Dialog.SetActive(true);
-            }
-            if (!tutorial)
-            {
-                sideCamera.GetComponent<Cinemachine.CinemachineVirtualCamera>().Priority = 1;
+            //if (!tutorial)
+            //{
+            //    sideCamera.GetComponent<Cinemachine.CinemachineVirtualCamera>().Priority = 1;
 
-                if (map.activeSelf == true)
-                {
-                    map.SetActive(false);
-                }
-                else
-                {
-                    map.SetActive(true);
-                }
-                IsConversation = true;
+            //    if (map.activeSelf == true)
+            //    {
+            //        map.SetActive(false);
+            //    }
+            //    else
+            //    {
+            //        map.SetActive(true);
+            //    }
+            //    IsConversation = true;
                 
-            }
+            //}
         }
     }
 

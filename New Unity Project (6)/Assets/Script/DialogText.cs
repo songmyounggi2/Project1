@@ -81,7 +81,7 @@ public class DialogText : MonoBehaviour
         yield return new WaitForSeconds(3f);
         yield return StartCoroutine(NormalChat(playerName, "...Damn...old man"));
         yield return new WaitForSeconds(3f);
-        yield return StartCoroutine(NormalChat("Owner", "hahahaha!! \n i'm just kidding"));
+        yield return StartCoroutine(NormalChat("Owner", "hahahaha!! \n Just kidding"));
         yield return new WaitForSeconds(3f);
         yield return StartCoroutine(NormalChat("Owner", "Here's the new news"));
         yield return new WaitForSeconds(3f);

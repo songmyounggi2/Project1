@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
-class MonsterMapSet
+public class MonsterMapSet
 {
     public string name;
     public string area;
@@ -28,6 +30,12 @@ public class MapControl : MonoBehaviour
     public GameObject map;
     bool mapOn;
 
+    GraphicRaycaster gr;
+    PointerEventData ped;
+
+    public Canvas mycanvas;
+
+
     int playerPower;
     int maxMonsterLV;
     int minMonsterLV;
@@ -36,25 +44,32 @@ public class MapControl : MonoBehaviour
     //Vector3 pointerPos;
     //GameObject obj = Instantiate(Resources.Load("/Prefabs/MonsList"+i)) as GameObject;
 
-    MonsterMapSet monsterMapSet;
+    DataManager dataManager;
+    public MonsterMapSet monsterMapSet;
     List<MonsterMapSet> monsterMapList = new List<MonsterMapSet>();
     List<Vector3> pointerPos = new List<Vector3>();
 
     // Start is called before the first frame update
     void Start()
     {
+        dataManager = DataManager.instance;
+        gr = mycanvas.GetComponent<GraphicRaycaster>();
+        ped = new PointerEventData(null);
+
         map = GameObject.Find("UI").transform.Find("Map").gameObject;
+
         for (int i =0; i<3; i++)
         {
             GameObject obj = Instantiate(Resources.Load("Prefabs/MonsList"+(i+1))) as GameObject;
             GameObject spawner = GameObject.Find("UI").transform.Find("Map").Find("Spawner" + (i + 1)).gameObject ;
             //Vector3 spawnerPos = GameObject.Find("UI").transform.Find("Map").Find("Spawner"+(i+1)).transform.position;
 
-            monsterMapSet = new MonsterMapSet("pest", "forest", spawner.transform.position , 1 , obj);
-            monsterMapList.Add(monsterMapSet);
+            MonsterTypeCheck(i, spawner, obj);
+
             Instantiate(monsterMapList[i].monsterIcon, Vector3.zero, Quaternion.identity);
+
             monsterMapList[i].monsterIcon.transform.SetParent(spawner.transform, false);
-            pointerPos.Add(spawner.transform.position + new Vector3(0, 20, 0));
+            //pointerPos.Add(spawner.transform.position + new Vector3(0, 20, 0));
         }
         
         //GameObject pointerObj = Instantiate(Resources.Load("Prefabs/pointer")) as GameObject;
@@ -63,8 +78,24 @@ public class MapControl : MonoBehaviour
         //mapPointer.transform.SetParent(this.gameObject.transform);
         //mapPointer.transform.SetParent(GameObject.Find("UI").transform.Find("Map").transform);
 
-        Debug.Log(pointerPos[0]);
+        //Debug.Log(pointerPos[0]);
 
+    }
+    void MonsterTypeCheck(int num, GameObject spawner, GameObject icon)
+    {
+        switch(num)
+        {
+            case 0:
+                monsterMapSet = new MonsterMapSet("Pest", "forest", spawner.transform.position, 1, icon);
+                break;
+            case 1:
+                monsterMapSet = new MonsterMapSet("Juggernaut", "mountain", spawner.transform.position, 1, icon);
+                break;
+            case 2:
+                monsterMapSet = new MonsterMapSet("Mudman", "desert", spawner.transform.position, 1, icon);
+                break;
+        }
+        monsterMapList.Add(monsterMapSet);
     }
     // Update is called once per frame
 
@@ -115,6 +146,42 @@ public class MapControl : MonoBehaviour
             {
                 mapOn = true;
                 map.SetActive(true);
+            }
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+
+            ped.position = Input.mousePosition;
+            List<RaycastResult> results = new List<RaycastResult>(); // 여기에 히트 된 개체 저장
+            gr.Raycast(ped, results);
+            if (results.Count != 0)
+            {
+                GameObject obj = results[0].gameObject;
+                if (obj.name == "MonsList1(Clone)") // 히트 된 오브젝트의 태그와 맞으면 실행
+                {
+                    
+                    dataManager.monsterMapSet = monsterMapList[0];
+                   // Debug.Log(dataManager.monsterMapSet.name);
+                    
+                }
+                else if (obj.name == "MonsList2(Clone)") // 히트 된 오브젝트의 태그와 맞으면 실행
+                {
+
+                    dataManager.monsterMapSet = monsterMapList[1];
+                    Debug.Log(dataManager.monsterMapSet.name);
+                    //SceneManager.LoadScene("Tutorial");
+                }
+                else if (obj.name == "MonsList3(Clone)") // 히트 된 오브젝트의 태그와 맞으면 실행
+                {
+
+                    dataManager.monsterMapSet = monsterMapList[2];
+                    Debug.Log(dataManager.monsterMapSet.name);
+                    //SceneManager.LoadScene("Tutorial");
+                }
+
+                SceneManager.LoadScene("Tutorial");
+                GameObject.Find("GameManager"). gameObject.GetComponent<StageControl>().enabled = true;
             }
         }
     }

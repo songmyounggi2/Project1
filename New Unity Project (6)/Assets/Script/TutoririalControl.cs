@@ -10,10 +10,19 @@ public class TutoririalControl : MonoBehaviour
     bool Tutorial_SkillAttack = false;
     bool Tutorial_Tab = false;
 
+    DataManager dataManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(fadeoutplay());
+        dataManager = DataManager.instance;
+
+        if (!dataManager.playerData.completeTutorial)
+        {
+            StartCoroutine(fadeoutplay());
+        }
+       
+        
     }
 
     IEnumerator fadeoutplay()
@@ -65,8 +74,8 @@ public class TutoririalControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      
-        
+        if (!dataManager.playerData.completeTutorial)
+        {
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
             {
                 if (Tutorial_Move == false)
@@ -77,49 +86,52 @@ public class TutoririalControl : MonoBehaviour
                 Tutorial_Move = false;
                 StartCoroutine(avoid());
             }
+
+            if ((Input.GetKey(KeyCode.Space)))
+            {
+                if (Tutorial_Avoid == false)
+                    return;
+                transform.Find("Avoid").gameObject.SetActive(false);
+                Time.timeScale = 1f;
+                Time.fixedDeltaTime = 0.02f * Time.timeScale;
+                Tutorial_Avoid = false;
+                StartCoroutine(Attack());
+            }
+            if ((Input.GetMouseButtonDown(0)))
+            {
+                if (Tutorial_Attack == true)
+                {
+                    transform.Find("Attack").gameObject.SetActive(false);
+                    Time.timeScale = 1f;
+                    Time.fixedDeltaTime = 0.02f * Time.timeScale;
+                    Tutorial_Attack = false;
+                    StartCoroutine(Attack_skill());
+                }
+            }
+            if (Input.anyKey)
+            {
+                if (Tutorial_SkillAttack == true)
+                {
+                    transform.Find("Skill").gameObject.SetActive(false);
+                    Time.timeScale = 1f;
+                    Time.fixedDeltaTime = 0.02f * Time.timeScale;
+                    Tutorial_SkillAttack = false;
+                    StartCoroutine(Tap());
+                }
+            }
+            if ((Input.GetKey(KeyCode.Tab)))
+            {
+                if (Tutorial_Tab == true)
+                {
+                    transform.Find("Tab").gameObject.SetActive(false);
+                    Time.timeScale = 1f;
+                    Time.fixedDeltaTime = 0.02f * Time.timeScale;
+                    Tutorial_Tab = false;
+                    StartCoroutine(End());
+                }
+            }
+        }
+
         
-        if((Input.GetKey(KeyCode.Space)))
-        {
-            if (Tutorial_Avoid == false)
-                return;
-            transform.Find("Avoid").gameObject.SetActive(false);
-            Time.timeScale = 1f;
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
-            Tutorial_Avoid = false;
-            StartCoroutine(Attack());
-        }
-        if ((Input.GetMouseButtonDown(0)))
-        {
-            if (Tutorial_Attack == true)
-            {
-                transform.Find("Attack").gameObject.SetActive(false);
-                Time.timeScale = 1f;
-                Time.fixedDeltaTime = 0.02f * Time.timeScale;
-                Tutorial_Attack = false;
-                StartCoroutine(Attack_skill());
-            }
-        }
-        if (Input.anyKey)
-        { 
-            if (Tutorial_SkillAttack == true)
-            {
-                transform.Find("Skill").gameObject.SetActive(false);
-                Time.timeScale = 1f;
-                Time.fixedDeltaTime = 0.02f * Time.timeScale;
-                Tutorial_SkillAttack = false;
-                StartCoroutine(Tap());
-            }
-        }
-        if ((Input.GetKey(KeyCode.Tab)))
-        {
-            if (Tutorial_Tab == true)
-            {
-                transform.Find("Tab").gameObject.SetActive(false);
-                Time.timeScale = 1f;
-                Time.fixedDeltaTime = 0.02f * Time.timeScale;
-                Tutorial_Tab = false;
-                StartCoroutine(End());
-            }
-        }
     }
 }

@@ -16,6 +16,7 @@ TagManager:
   - SkillName
   - Warning
   - cus
+  - MonsterIconInMap
   layers:
   - Default
   - TransparentFX

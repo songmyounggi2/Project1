@@ -5,11 +5,11 @@ using UnityEngine;
 public class lockOn : MonoBehaviour
 {
     public GameObject monster;
-    // This is what the player is looking at. In this example it is the dinosaur's head
+    
     public GameObject fovStartPoint;
-    // We will use the forward direction of whatever GameObject you give it.
+
     public float lookSpeed = 0.5f;
-    // How fast the rotation happens.
+ 
     public float maxAngle = 45;
     // The maximum fov to trigger looking at the enemy.
     public float maxAngleReset = 90;
@@ -30,8 +30,19 @@ public class lockOn : MonoBehaviour
     private Quaternion lookAt;
     private Quaternion targetRotation;
 
+    private void Start()
+    {
+       
+    }
+
     void Update()
     {
+        if(fovStartPoint.tag == "Player")
+            monster = GameObject.FindGameObjectWithTag("Monster");
+        else if (fovStartPoint.tag == "Monster")
+            monster = GameObject.FindGameObjectWithTag("Player");
+
+
         if (leftArm || rightArm)
         {
             if (canShootLeft == true || canShootRight == true)

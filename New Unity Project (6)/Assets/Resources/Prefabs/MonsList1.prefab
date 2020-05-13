@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 191535006842763553}
   m_Layer: 5
   m_Name: MonsList1
-  m_TagString: Untagged
+  m_TagString: MonsterIconInMap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
